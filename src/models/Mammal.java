@@ -43,6 +43,10 @@ public abstract class Mammal extends Pet {
         return sex;
     }
     public void setSex(char sex) {
+        if(sex == 'M' || sex == 'F'){
+            // Unidentified sex
+            sex = 'U';
+        }
         this.sex = sex;
     }
 
@@ -57,7 +61,9 @@ public abstract class Mammal extends Pet {
         return weight;
     }
     public void setWeight(double weight) {
-        this.weight = weight;
+        if(Utilities.validRange(weight, 2, 200)){
+            this.weight = weight;
+        }
     }
 
     public boolean isVaccinated() {
