@@ -1,22 +1,53 @@
 package models;
 
-public class Pet {
+import jdk.jshell.execution.Util;
+import utils.Utilities;
+
+public abstract class Pet {
     private String name;
     private int age;
     private Owner owner;
     private int id;
-    private boolean[] daysAttending;
+
+    // days of the week; Monday through Sunday
+    private boolean[] daysAttending = {
+            false, false, false, false, false, false, false
+    };
+
+    private static int nextId = 1000;
 
     public Pet(String name, int age, Owner owner, int id){
+        if(!Utilities.validStringlength(name, 30)){
+            name = Utilities.truncateString(name, 30);
+        }
         this.name = name;
+
+        if(age < 0){
+            age = 0;
+        }
         this.age = age;
+
+        // if owner is not of type Owner
+        if(!(owner instanceof Owner)){
+            owner = null;
+        }
         this.owner = owner;
+
+        // id of usually -1 or less means to set the id automatically
+        if(id < 0){
+            id = nextId;
+            // increment nextId unless user specifically selects an id
+            nextId += 1;
+        }
         this.id = id;
     }
 
     @Override
     public String toString(){
-        return "";
+        return "Name: " + getName()
+                +" | Age: " + getAge()
+                + " | Owner: " + getOwner().getName()
+                + " | Id: " + getId();
     }
 
     //
@@ -27,28 +58,36 @@ public class Pet {
         return id;
     }
     public void setId(int id) {
-        this.id = id;
+        if(id >= 0){
+            this.id = id;
+        }
     }
 
     public Owner getOwner() {
         return owner;
     }
     public void setOwner(Owner owner) {
-        this.owner = owner;
+        if(owner instanceof Owner){
+            this.owner = owner;
+        }
     }
 
     public int getAge() {
         return age;
     }
     public void setAge(int age) {
-        this.age = age;
+        if(age >= 0){
+            this.age = age;
+        }
     }
 
     public String getName() {
         return name;
     }
     public void setName(String name) {
-        this.name = name;
+        if(Utilities.validStringlength(name, 30)){
+            this.name = name;
+        }
     }
 
     public boolean[] getDaysAttending() {
@@ -62,21 +101,23 @@ public class Pet {
     // Main methods
     //
 
-    public void checkOut(int id){
-
+    public void checkIn(int dayIndex){
+        if(Utilities.validRange(dayIndex, 0, 7)){
+            getDaysAttending()[dayIndex] = true;
+        }
     }
 
-    public void checkIn(int id){
-
+    public void checkOut(int dayIndex){
+        if(Utilities.validRange(dayIndex, 0, 7)){
+            getDaysAttending()[dayIndex] = false;
+        }
     }
 
     public void initName(String name){
 
     }
 
-    public double calculateWeeklyFee(){
-        return 0.0;
-    }
+    public abstract double calculateWeeklyFee();
 
     public int numOfDaysAttending(){
         int daysAttendingCount = 0;

@@ -1,21 +1,36 @@
 package models;
 
-public class Dog extends Mammal {
-    private final float NONDANGEROUS_DAILY_RATE = 1;
-    private boolean dangerousBreed;
-    private final float DANGEROUS_DAILY_RATE = 1;
+import utils.Utilities;
+import utils.DogBreedUtility;
 
-    private String breed;
+public class Dog extends Mammal {
+    private final float NONDANGEROUS_DAILY_RATE = 30;
+    private final float DANGEROUS_DAILY_RATE = 40;
+
+    private boolean dangerousBreed = false;
+    private float currentRate = 0;
+    private String breed = "";
 
     public Dog(String name, int age, Owner owner, int id, char sex, boolean neutered, double weight, boolean vaccinated, boolean dangerousBreed, String breed){
         super(name, age, owner, id, sex, neutered, weight, vaccinated);
         this.dangerousBreed = dangerousBreed;
-        this.breed = breed;
+
+        // this variable is here to not have to use if statements all the time
+        // to find out the currentRate for this dog
+        currentRate = this.dangerousBreed ? DANGEROUS_DAILY_RATE : NONDANGEROUS_DAILY_RATE;
+
+        // if dog breed is valid
+        if(DogBreedUtility.checkBreed(breed)){
+            this.breed = breed;
+        }
     }
 
     @Override
     public String toString(){
-        return "";
+        return super.toString() + " | Dangerous Breed: " + isDangerousBreed()
+                + " | Current Rate: " + getCurrentRate()
+                + " | Breed: " + getBreed()
+                + " | Weekly Fee: " + calculateWeeklyFee();
     }
 
     //
@@ -26,7 +41,9 @@ public class Dog extends Mammal {
         return breed;
     }
     public void setBreed(String breed) {
-        this.breed = breed;
+        if(DogBreedUtility.checkBreed(breed)){
+            this.breed = breed;
+        }
     }
 
     public boolean isDangerousBreed() {
@@ -34,6 +51,11 @@ public class Dog extends Mammal {
     }
     public void setDangerousBreed(boolean dangerousBreed) {
         this.dangerousBreed = dangerousBreed;
+        currentRate = dangerousBreed ? DANGEROUS_DAILY_RATE : NONDANGEROUS_DAILY_RATE;
+    }
+
+    public float getCurrentRate() {
+        return currentRate;
     }
 
     //
@@ -42,6 +64,6 @@ public class Dog extends Mammal {
 
     @Override
     public double calculateWeeklyFee() {
-        return super.calculateWeeklyFee();
+        return numOfDaysAttending() * getCurrentRate();
     }
 }

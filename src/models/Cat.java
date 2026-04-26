@@ -1,8 +1,12 @@
 package models;
 
+import utils.CatToyUtility;
+
 public class Cat extends Mammal {
-    private String favouriteToy;
-    private boolean indoorCat;
+    private String favouriteToy = "None";
+    private boolean indoorCat = true;
+
+    private final float BASE_RATE = 20;
 
     public Cat(String name, int age, Owner owner, int id, char sex, boolean neutered, double weight, boolean vaccinated, String favouriteToy, boolean indoorCat){
         super(name, age, owner, id, sex, neutered, weight, vaccinated);
@@ -12,7 +16,9 @@ public class Cat extends Mammal {
 
     @Override
     public String toString(){
-        return "";
+        return super.toString() + " | Favourite Toy: " + getFavouriteToy()
+                + " | Indoor Cat: " + isIndoorCat()
+                + " | Weekly Fee: " + calculateWeeklyFee();
     }
 
     //
@@ -39,6 +45,8 @@ public class Cat extends Mammal {
 
     @Override
     public double calculateWeeklyFee() {
-        return super.calculateWeeklyFee();
+        // if indoor cat then rate is 25 else 20
+        float thisRate = isIndoorCat() ? BASE_RATE + 5 : BASE_RATE;
+        return numOfDaysAttending() * thisRate;
     }
 }
