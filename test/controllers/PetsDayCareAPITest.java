@@ -1,7 +1,7 @@
 package controllers;
 
 import models.*;
-import models.mammals.Dog;
+import models.Dog;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
