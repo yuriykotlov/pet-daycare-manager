@@ -30,7 +30,7 @@ public abstract class Mammal extends Pet {
     @Override
     public String toString(){
         return super.toString() + " | Sex: " + getSex()
-                +" | Neutered: " + isNeutered()
+                + " | Neutered: " + isNeutered()
                 + " | Weight: " + getWeight()
                 + "kg | Vaccinated: " + isVaccinated();
     }

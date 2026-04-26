@@ -1,11 +1,15 @@
 package models;
 
-public class Parrot extends Bird {
-    private String vocabularySize;
+import utils.BirdUtility;
 
-    public Parrot(String name, int age, Owner owner, int id, double wingSpan, boolean canFly, String vocabularySize){
+public class Parrot extends Bird {
+    private String vocabularySize = "Amazing";
+
+    private final float BASE_RATE = 10;
+
+    public Parrot(String name, int age, Owner owner, int id, double wingSpan, boolean canFly, int vocabularySize){
         super(name, age, owner, id, wingSpan, canFly);
-        this.vocabularySize = vocabularySize;
+        this.vocabularySize = BirdUtility.getVocabularyLevel2(vocabularySize);
     }
 
     @Override
@@ -30,6 +34,6 @@ public class Parrot extends Bird {
 
     @Override
     public double calculateWeeklyFee() {
-        return super.calculateWeeklyFee();
+        return numOfDaysAttending() * BASE_RATE;
     }
 }

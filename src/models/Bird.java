@@ -1,19 +1,26 @@
 package models;
 
+import utils.Utilities;
+
 import java.util.Objects;
 
 public abstract class Bird extends Pet {
-    private double wingSpan;
-    private boolean canFly;
+    // wingspan is in centimetres
+    private double wingSpan = 3;
+    private boolean canFly = false;
 
     public Bird(String name, int age, Owner owner, int id, double wingSpan, boolean canFly){
         super(name, age, owner, id);
-        this.wingSpan = wingSpan;
+        if(Utilities.validRange(wingSpan, 3, 155.5)){
+            this.wingSpan = wingSpan;
+        }
         this.canFly = canFly;
     }
 
+    @Override
     public String toString(){
-        return "";
+        return super.toString() + " | Wing Span: " + getWingSpan()
+                + " | Can Fly: " + getCanFly();
     }
 
     //
@@ -27,7 +34,7 @@ public abstract class Bird extends Pet {
         this.wingSpan = wingSpan;
     }
 
-    public boolean isCanFly() {
+    public boolean getCanFly() {
         return canFly;
     }
     public void setCanFly(boolean canFly) {
