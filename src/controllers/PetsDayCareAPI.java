@@ -4,6 +4,7 @@ package controllers;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
+import models.Pet;
 import utils.BirdUtility;
 import utils.ISerializer;
 
@@ -12,16 +13,16 @@ import java.util.ArrayList;
 
 
 public class PetsDayCareAPI implements ISerializer {
-//    private ArrayList<Pet> pets;
-//    private String name;
-//    private int maxNumberOfPets;
-//    private File file;
+    private ArrayList<Pet> pets;
+    private String name;
+    private int maxNumberOfPets;
+    private File file;
 
     //-------------------------------------
     //  Constructor
     //-------------------------------------
     //TODO array list of pets, should be empty at the start.
-    //public PetsDayCareAPI(String name, int maxNumberOfPets, File file) {
+    public PetsDayCareAPI(String name, int maxNumberOfPets, File file) {
 
     //TODO array list of pets, should be empty at the start.
     //     When creating the PetsDayCare, truncate the name to 20 characters.
@@ -33,13 +34,60 @@ public class PetsDayCareAPI implements ISerializer {
     //-------------------------------------
     //  Setters/Getters
     //-------------------------------------
-    //TODO Add a getter and setter for each field, that adheres to the  validation rules as per spec
+    public ArrayList<Pet> getPets() {
+        return pets;
+    }
+    public void setPets(ArrayList<Pet> pets) {
+        this.pets = pets;
+    }
 
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getMaxNumberOfPets() {
+        return maxNumberOfPets;
+    }
+    public void setMaxNumberOfPets(int maxNumberOfPets) {
+        this.maxNumberOfPets = maxNumberOfPets;
+    }
+
+    public File getFile() {
+        return file;
+    }
+    public void setFile(File file) {
+        this.file = file;
+    }
+
+    public String fileName(){
+        return getFile().getName();
+    }
+
+    //
 
     //-------------------------------------
     //  Pet ARRAYLIST CRUD
     //-------------------------------------
     //TODO add the methods as per spec.
+
+    private void initName(String name){
+
+    }
+
+    public Pet removePetAtPosition(int targetIndex){
+        return null;
+    }
+
+    public Pet updatePet(int petId, Pet updatedPet){
+        return null;
+    }
+
+    public boolean addPet(Pet newPet){
+        return true;
+    }
 
     //-------------------------------------
     //  Pet ARRAYLIST - Utility methods
@@ -50,19 +98,34 @@ public class PetsDayCareAPI implements ISerializer {
     //      - returns false otherwise
     //      As this method is used inside this class, it should be private
 
+    public boolean isValidPetIndex(int petIndex){
+        return true;
+    }
 
    // TODO  Add a method  getPet(int) which returns a Pet object:
    //       - if the supplied index is valid, the Pet object at that location is returned
    //       - if the supplied index is invalid, null is returned
 
+    public Pet getPetByIndex(int petIndex){
+        return null;
+    }
+
    //TODO  Add a method  getPet(String) which returns a Pet object:
    //       - if the supplied name is found, the first Dog object with that name is returned
    //       - if the supplied name is not found, null is returned
+
+    public Pet getPetByName(String petName){
+        return null;
+    }
 
 
    //TODO  Add a method  getPetById(int) which returns a Pet object:
    //       - if the supplied id is found, the Pet object with that id is returned
    //       - if the supplied id is not found, null is returned
+
+    public Pet getPetByiD(int id){
+        return null;
+    }
 
 
 
@@ -78,10 +141,66 @@ public class PetsDayCareAPI implements ISerializer {
 
 //TODO +  and the remaining listing methods as per spec
 
+    public String listOwners(){
+        return "";
+    }
 
+    public String listAllPets(){
+        return "";
+    }
 
+    public String listAllCats(){
+        return "";
+    }
 
+    public String listAllDogs(){
+        return "";
+    }
 
+    public String listAllParrots(){
+        return "";
+    }
+
+    public String listAllDangerousDogs(){
+        return "";
+    }
+
+    public String listAllPetsByOwner(String ownerName){
+        return "";
+    }
+
+    public String listAllPetsThatStayMoreThanXDays(int daysStayed){
+        return "";
+    }
+
+    public int numberOfPets(){
+        return 0;
+    }
+
+    public int numberOfCats(){
+        return 0;
+    }
+
+    public int numberOfIndoorCats(){
+        return 0;
+    }
+
+    public int numberOfDogs(){
+        return 0;
+    }
+
+    public int numberOfDangerousDogs(){
+        return 0;
+    }
+
+    public int numberOfParrots(){
+        return 0;
+    }
+
+    // returns number of parrots in same category of vocabulary size
+    public int numberOfParrotsByVocabularySize(int vocabularySize){
+        return 0;
+    }
 
 
     //-------------------------------------
@@ -115,26 +234,68 @@ public class PetsDayCareAPI implements ISerializer {
 
     //--------------------------------
     // Sorting methods
-    //
     //--------------------------------
     //  Sorting methods as per spec .
     // NOTE : THESE MUST BE WRITTEN WITHOUT THE USE OF THE SORT LIBRARY. If in doubt, just ask.
 
+    public void sortPetsById(){
 
+    }
+
+    public void sortPetsByName(){
+
+    }
+
+    private void swapPetsAtPositions(int position1, int position2){
+
+    }
+
+    private void swapPets(Pet pet1, Pet pet2){
+
+    }
+
+    //------------------------------
+    //  OTHER METHODS
+    //-------------------------------
+
+    public double getWeeklyIncome(){
+        return 0.0;
+    }
+
+    public double getAverageNumDaysPerWeekStayed(){
+        return 0.0;
+    }
+
+    public Pet findDogByOwnerAndBreedAndAge(String ownerName, String breed, int age){
+        return null;
+    }
+
+    public String getPetsByOwnerName(String ownerName){
+        return "";
+    }
+
+    //---------------------------------
     //  Methods for Persistence
     // --------------------------------
- //---------------------------------
- //  Methods for Persistence
- // --------------------------------
 
- //TODO Add a method, load().  The return type is void.
- //    This method uses the XStream component to deserialise the Pets array list  from
- //    an XML file into the Pets array list.
+    //TODO Add a method, load().  The return type is void.
+    //    This method uses the XStream component to deserialise the Pets array list  from
+    //    an XML file into the Pets array list.
+
+    @Override
+    public void load(){
+
+    }
 
 
- //TODO Add a method, save().  The return type is void.
- //    This method uses the XStream component to serialise the Pets array list object  to
- //    an XML file.
+    //TODO Add a method, save().  The return type is void.
+    //    This method uses the XStream component to serialise the Pets array list object  to
+    //    an XML file.
+
+    @Override
+    public void save(){
+
+    }
 
 }
 
