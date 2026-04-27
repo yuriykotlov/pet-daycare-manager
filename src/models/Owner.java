@@ -4,7 +4,7 @@ package models;
 import java.util.Objects;
 // this class is fully functional
 public class Owner {
-    private  int id = 100;// 3 digits - default 100
+    private int id = 100;// 3 digits - default 100
     private String name; // <= 30  //number should be stored with no spaces, start with 0 and have 10 digits in ir
     private String phoneNumber = "087302000";
 

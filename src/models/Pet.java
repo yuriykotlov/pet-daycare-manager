@@ -14,13 +14,20 @@ public abstract class Pet {
             false, false, false, false, false, false, false
     };
 
+    private final String[] DAYS = {
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Sunday"
+    };
+
     private static int nextId = 1000;
 
     public Pet(String name, int age, Owner owner, int id){
-        if(!Utilities.validStringlength(name, 30)){
-            name = Utilities.truncateString(name, 30);
-        }
-        this.name = name;
+        initName(name);
 
         if(age < 0){
             age = 0;
@@ -103,29 +110,39 @@ public abstract class Pet {
 
     public void checkIn(int dayIndex){
         if(Utilities.validRange(dayIndex, 0, 7)){
-            getDaysAttending()[dayIndex] = true;
+            daysAttending[dayIndex] = true;
         }
     }
 
     public void checkOut(int dayIndex){
         if(Utilities.validRange(dayIndex, 0, 7)){
-            getDaysAttending()[dayIndex] = false;
+            daysAttending[dayIndex] = false;
         }
     }
 
-    public void initName(String name){
-
+    private void initName(String name){
+        this.name = name.length() <= 30 ? name : Utilities.truncateString(name ,30);
     }
 
     public abstract double calculateWeeklyFee();
 
     public int numOfDaysAttending(){
         int daysAttendingCount = 0;
-        for(boolean day : this.getDaysAttending()){
+        for(boolean day : daysAttending){
             if(day == true){
                 daysAttendingCount++;
             }
         }
         return daysAttendingCount;
+    }
+
+    public String displayStringOfDaysAttending(){
+        String daysAttendingString = "";
+
+        for(int i = 0; i < daysAttending.length; i++){
+            daysAttendingString += "\n   -> " + DAYS[i] + " [ " + Utilities.booleanToYN(daysAttending[i]) + " ]";
+        }
+
+        return daysAttendingString;
     }
 }

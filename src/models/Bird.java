@@ -19,8 +19,8 @@ public abstract class Bird extends Pet {
 
     @Override
     public String toString(){
-        return super.toString() + " | Wing Span: " + getWingSpan()
-                + " | Can Fly: " + getCanFly();
+        return super.toString() + " | Wing Span: " + wingSpan
+                + " | Can Fly: " + canFly;
     }
 
     //
@@ -34,7 +34,7 @@ public abstract class Bird extends Pet {
         this.wingSpan = wingSpan;
     }
 
-    public boolean getCanFly() {
+    public boolean canFly() {
         return canFly;
     }
     public void setCanFly(boolean canFly) {

@@ -14,7 +14,6 @@ import static utils.Utilities.isValidIndex;
 
 //todo - class is fully functional
 public class OwnerAPI implements ISerializer {
-
     private List<Owner> ownerList = new ArrayList<>();
 
     private File file;
