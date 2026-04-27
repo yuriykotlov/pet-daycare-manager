@@ -73,7 +73,7 @@ public class PetsDayCareAPI implements ISerializer {
     }
 
     public String fileName(){
-        return file.getName();
+        return String.valueOf(file);
     }
 
     //-------------------------------------
@@ -135,7 +135,7 @@ public class PetsDayCareAPI implements ISerializer {
         return null;
     }
 
-    public Pet getPetByiD(int id){
+    public Pet getPetById(int id){
         for(Pet pet : pets){
             if(pet.getId() == id){
                 return pet;
@@ -147,14 +147,6 @@ public class PetsDayCareAPI implements ISerializer {
     //------------------------------------
     // LISTING METHODS - Basic and Advanced
     //------------------------------------
-//TODO e.g. Add a method, listAllPets().  The return type is String.
-//     This method returns a list of the pets stored in the array list.
-//     Each pet should be on a new line and should be preceded by the index number e.g.
-//        0: pet 1 Details
-//        1: pet 2 Details
-//    If there are no pets stored in the array list, return a string that contains "There are no pets registered at the moment".
-
-//TODO +  and the remaining listing methods as per spec
 
     private String getPetType(Pet pet){
         if(pet instanceof Cat){
@@ -176,19 +168,36 @@ public class PetsDayCareAPI implements ISerializer {
                 + "\n  - Is Vaccinated: " + mammal.isVaccinated();
     }
 
+    private String listPet(Pet pet){
+        return " | " + pet.getName()
+                + "\n  - Owner: " + pet.getOwner().getName()
+                + "\n  - Type of Pet: " + getPetType(pet)
+                + "\n  - Id: " + pet.getId()
+                + "\n  - Age: " + pet.getAge()
+                + "\n  - Days Attending: " + pet.displayStringOfDaysAttending()
+                + "\n";
+    }
+
+    private String listDog(Pet pet){
+        if(!(pet instanceof Dog dog)) return "";
+
+        return " | " + dog.getName()
+                + "\n  - Owner: " + dog.getOwner().getName()
+                + "\n  - Id: " + dog.getId()
+                + "\n  - Age: " + dog.getAge()
+                + getMammalGeneralInfo(dog)
+                + "\n  - Breed: " + dog.getBreed()
+                + "\n  - Is a dangerous breed: " + Utilities.booleanToYN(dog.isDangerousBreed())
+                + "\n  - Current daily rate: " + dog.getCurrentRate()
+                + "\n  - Days Attending: " + dog.displayStringOfDaysAttending()
+                + "\n";
+    }
+
     public String listAllPets(){
         String petsString = "";
 
         for(int i = 0; i < pets.size(); i++){
-            Pet thisPet = pets.get(i);
-
-            petsString += i + " | " + thisPet.getName()
-                            + "\n  - Owner: " + thisPet.getOwner().getName()
-                            + "\n  - Type of Pet: " + getPetType(thisPet)
-                            + "\n  - Id: " + thisPet.getId()
-                            + "\n  - Age: " + thisPet.getAge()
-                            + "\n  - Days Attending: " + thisPet.displayStringOfDaysAttending()
-                            + "\n";
+            petsString += i + listPet(pets.get(i));
         }
 
         return petsString;
@@ -220,16 +229,7 @@ public class PetsDayCareAPI implements ISerializer {
         for(int i = 0; i < pets.size(); i++){
             if(!(pets.get(i) instanceof Dog dog)) continue;
 
-            dogsString += i + " | " + dog.getName()
-                    + "\n  - Owner: " + dog.getOwner().getName()
-                    + "\n  - Id: " + dog.getId()
-                    + "\n  - Age: " + dog.getAge()
-                    + getMammalGeneralInfo(dog)
-                    + "\n  - Breed: " + dog.getBreed()
-                    + "\n  - Is a dangerous breed: " + Utilities.booleanToYN(dog.isDangerousBreed())
-                    + "\n  - Current daily rate: " + dog.getCurrentRate()
-                    + "\n  - Days Attending: " + dog.displayStringOfDaysAttending()
-                    + "\n";
+            dogsString += i + listDog(dog);
         }
 
         return dogsString;
@@ -256,15 +256,42 @@ public class PetsDayCareAPI implements ISerializer {
     }
 
     public String listAllDangerousDogs(){
-        return "";
+        String dangerousDogsString = "";
+
+        for(int i = 0; i < pets.size(); i++){
+            if(!(pets.get(i) instanceof Dog dog)) continue;
+            if(!dog.isDangerousBreed()) continue;
+
+            dangerousDogsString += i + listDog(dog);
+        }
+
+        return dangerousDogsString;
     }
 
     public String listAllPetsByOwner(String ownerName){
-        return "";
+        String petsOfOwnerString = "";
+
+        for(int i = 0; i < pets.size(); i++){
+            if(!pets.get(i).getOwner().getName().toLowerCase().equals(ownerName)) continue;
+            petsOfOwnerString += i + listPet(pets.get(i));
+        }
+
+        return petsOfOwnerString;
     }
 
     public String listAllPetsThatStayMoreThanXDays(int daysStayed){
-        return "";
+        String petsThatAreStayingString = "";
+
+        for(int i = 0; i < pets.size(); i++){
+            if(pets.get(i).numOfDaysAttending() <= daysStayed) continue;
+            petsThatAreStayingString += i + listPet(pets.get(i));
+        }
+
+        if(petsThatAreStayingString.isEmpty()){
+            return "There are no pets staying more than " + daysStayed + " days.";
+        }
+
+        return petsThatAreStayingString;
     }
 
     //-------------------------------------
@@ -272,54 +299,133 @@ public class PetsDayCareAPI implements ISerializer {
     //-------------------------------------
 
     public int numberOfPets(){
-        return 0;
+        int petCount = 0;
+
+        for(Pet pet : pets){
+            petCount++;
+        }
+
+        return petCount;
     }
 
     public int numberOfCats(){
-        return 0;
+        int catCount = 0;
+
+        for(Pet pet : pets){
+            if(!(pet instanceof Cat)) continue;
+            catCount++;
+        }
+
+        return catCount;
     }
 
     public int numberOfIndoorCats(){
-        return 0;
+        int indoorCatCount = 0;
+
+        for(Pet pet : pets){
+            if(!(pet instanceof Cat)) continue;
+            if(!((Cat) pet).isIndoorCat()) continue;
+            indoorCatCount++;
+        }
+
+        return indoorCatCount;
     }
 
     public int numberOfDogs(){
-        return 0;
+        int dogCount = 0;
+
+        for(Pet pet : pets){
+            if(!(pet instanceof Dog)) continue;
+            dogCount++;
+        }
+
+        return dogCount;
     }
 
     public int numberOfDangerousDogs(){
-        return 0;
+        int dangerousDogsCount = 0;
+
+        for(Pet pet : pets){
+            if(!(pet instanceof Dog)) continue;
+            if(!((Dog) pet).isDangerousBreed()) continue;
+            dangerousDogsCount++;
+        }
+
+        return dangerousDogsCount;
     }
 
     public int numberOfParrots(){
-        return 0;
+        int parrotCount = 0;
+
+        for(Pet pet : pets){
+            if(!(pet instanceof Parrot)) continue;
+            parrotCount++;
+        }
+
+        return parrotCount;
     }
 
     // returns number of parrots in same category of vocabulary size
     public int numberOfParrotsByVocabularySize(int vocabularySize){
-        return 0;
+        int parrotWithVocabSizeCount = 0;
+
+        for(Pet pet : pets){
+            if(!(pet instanceof Parrot)) continue;
+            if(!((Parrot) pet).getVocabularySize().equals(BirdUtility.getVocabularyLevel2(vocabularySize))) continue;
+            parrotWithVocabSizeCount++;
+        }
+
+        return parrotWithVocabSizeCount;
     }
 
     public double getWeeklyIncome(){
-        return 0.0;
+        double totalIncome = 0.0;
+
+        for(Pet pet : pets){
+            for(boolean dayAttending : pet.getDaysAttending()){
+                if(!dayAttending) continue;
+
+                if(pet instanceof Cat cat){
+                    totalIncome += cat.calculateWeeklyFee();
+                } else if(pet instanceof Dog dog){
+                    totalIncome += dog.calculateWeeklyFee();
+                } else if(pet instanceof Parrot parrot){
+                    totalIncome += parrot.calculateWeeklyFee();
+                }
+            }
+        }
+
+        return totalIncome;
     }
 
     public double getAverageNumDaysPerWeekStayed(){
-        return 0.0;
+        // 7 is the number of days in a week
+        int totalDays = pets.size() * 7;
+        int totalDaysStayed = 0;
+
+        for(Pet pet : pets) {
+            for (boolean dayAttending : pet.getDaysAttending()) {
+                if(!dayAttending) continue;
+                totalDaysStayed++;
+            }
+        }
+
+        return (double) totalDays / totalDaysStayed;
     }
 
 
     //------------------------------
     //  FINDING METHODS
     //-------------------------------
-    // TOD Add all the find methods
 
     public Pet findDogByOwnerAndBreedAndAge(String ownerName, String breed, int age){
+        for(Pet pet : pets){
+            if(!(pet instanceof Dog dog)) continue;
+            if(pet.getOwner().getName().toLowerCase().equals(ownerName) && dog.getBreed().equals(breed) && pet.getAge() == age){
+                return pet;
+            }
+        }
         return null;
-    }
-
-    public String getPetsByOwnerName(String ownerName){
-        return "";
     }
 
     //--------------------------------
@@ -336,37 +442,66 @@ public class PetsDayCareAPI implements ISerializer {
 
     }
 
-    private void swapPetsAtPositions(int position1, int position2){
+    private void swapPets(int position1, int position2){
+        if(!isValidPetIndex(position1) || !isValidPetIndex(position2)) return;
 
+        Pet pet1 = pets.get(position1);
+
+        pets.set(position1, pets.get(position2));
+        pets.set(position2, pet1);
     }
 
     private void swapPets(Pet pet1, Pet pet2){
+        int pet1Position = -1;
+        int pet2Position = -1;
 
+        for(int i = 0; i < pets.size(); i++){
+            if(pets.get(i).getId() == pet1.getId() && pet1Position == -1){
+                pet1Position = i;
+            } else if(pets.get(i).getId() == pet2.getId() && pet2Position == -1){
+                pet2Position = i;
+            }
+        }
+
+        pets.set(pet1Position, pet2);
+        pets.set(pet2Position, pet1);
     }
 
     //---------------------------------
     //  Methods for Persistence
     // --------------------------------
 
-    //TODO Add a method, load().  The return type is void.
-    //    This method uses the XStream component to deserialise the Pets array list  from
-    //    an XML file into the Pets array list.
-
     @Override
-    public void load(){
+    public void load() throws Exception{
+        //list of classes that you wish to include in the serialisation, separated by a comma
+        Class<?>[] classes = new Class[]{
+                Owner.class,
+                Pet.class,
+                Mammal.class,
+                Cat.class,
+                Dog.class,
+                Bird.class,
+                Parrot.class
+        };
 
+        //setting up the xstream object with default security and the above classes
+        XStream xstream = new XStream(new DomDriver());
+        XStream.setupDefaultSecurity(xstream);
+        xstream.allowTypes(classes);
+
+        //doing the actual serialisation to an XML file
+        ObjectInputStream in = xstream.createObjectInputStream(new FileReader(file));
+        pets = (ArrayList<Pet>) in.readObject();
+        in.close();
     }
 
-
-    //TODO Add a method, save().  The return type is void.
-    //    This method uses the XStream component to serialise the Pets array list object  to
-    //    an XML file.
-
     @Override
-    public void save(){
-
+    public void save() throws Exception{
+        XStream xstream = new XStream(new DomDriver());
+        ObjectOutputStream out = xstream.createObjectOutputStream(new FileWriter(file));
+        out.writeObject(pets);
+        out.close();
     }
-
 }
 
 
