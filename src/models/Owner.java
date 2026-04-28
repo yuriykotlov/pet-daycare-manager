@@ -66,7 +66,7 @@ public class Owner {
 
     @Override
     public String toString() {
-        return "Id: " + id + "| Name: " + name + "| Phone: " + phoneNumber;
+        return  "Name: " + name + " | Phone: " + phoneNumber + " | Id: " + id;
 
     }}
 

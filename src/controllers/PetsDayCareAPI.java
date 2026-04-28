@@ -164,34 +164,32 @@ public class PetsDayCareAPI implements ISerializer {
         if(!(pet instanceof Mammal mammal)) return "";
 
         return "\n  - Sex: " + mammal.getSex()
-                + "\n  - Weight: " + mammal.getWeight()
-                + "\n  - Is Neutered: " + mammal.isNeutered()
-                + "\n  - Is Vaccinated: " + mammal.isVaccinated();
+                + " | Weight: " + mammal.getWeight()
+                + " | Is Neutered: " + mammal.isNeutered()
+                + " | Is Vaccinated: " + mammal.isVaccinated();
     }
 
     public String listPet(Pet pet){
         return pet.getName()
                 + "\n  - Owner: " + pet.getOwner()
                 + "\n  - Type of Pet: " + getPetType(pet)
-                + "\n  - Id: " + pet.getId()
-                + "\n  - Age: " + pet.getAge()
+                + "\n  - Id: " + pet.getId() + " | Age: " + pet.getAge()
                 + "\n  - Days Attending: " + pet.displayStringOfDaysAttending()
-                + "\n";
+                + "\n\n";
     }
 
     public String listDog(Pet pet){
         if(!(pet instanceof Dog dog)) return "";
 
         return dog.getName()
-                + "\n  - Owner: " + dog.getOwner().getName()
-                + "\n  - Id: " + dog.getId()
-                + "\n  - Age: " + dog.getAge()
+                + "\n  - Owner: " + dog.getOwner()
+                + "\n  - Id: " + dog.getId() + " | Age: " + dog.getAge()
                 + getMammalGeneralInfo(dog)
                 + "\n  - Breed: " + dog.getBreed()
                 + "\n  - Is a dangerous breed: " + Utilities.booleanToYN(dog.isDangerousBreed())
                 + "\n  - Current daily rate: " + dog.getCurrentRate()
                 + "\n  - Days Attending: " + dog.displayStringOfDaysAttending()
-                + "\n";
+                + "\n\n";
     }
 
     public String listCat(Pet pet){
@@ -199,26 +197,24 @@ public class PetsDayCareAPI implements ISerializer {
 
         return cat.getName()
                 + "\n  - Owner: " + cat.getOwner().getName()
-                + "\n  - Id: " + cat.getId()
-                + "\n  - Age: " + cat.getAge()
+                + "\n  - Id: " + cat.getId() + " | Age: " + cat.getAge()
                 + getMammalGeneralInfo(cat)
                 + "\n  - Favourite Toy: " + cat.getFavouriteToy()
                 + "\n  - Is an indoor cat: " + Utilities.booleanToYN(cat.isIndoorCat())
-                + "\n";
+                + "\n\n";
     }
 
     public String listParrot(Pet pet){
         if(!(pet instanceof Parrot parrot)) return "";
 
         return parrot.getName()
-                + "\n  - Owner: " + parrot.getOwner().getName()
-                + "\n  - Id: " + parrot.getId()
-                + "\n  - Age: " + parrot.getAge()
+                + "\n  - Owner: " + parrot.getOwner()
+                + "\n  - Id: " + parrot.getId() + " | Age: " + parrot.getAge()
                 + "\n  - Wing Span: " + parrot.getWingSpan()
                 + "\n  - Can Fly: " + Utilities.booleanToYN(parrot.canFly())
                 + "\n  - Level of Vocabulary Size: " + parrot.getVocabularySize()
                 + "\n  - Days Attending: " + parrot.displayStringOfDaysAttending()
-                + "\n";
+                + "\n\n";
     }
 
     public String listAllPets(){
@@ -305,6 +301,7 @@ public class PetsDayCareAPI implements ISerializer {
         String petsOfOwnerString = "";
 
         for(int i = 0; i < pets.size(); i++){
+            if(pets.get(i).getOwner() == null) continue;
             if(!pets.get(i).getOwner().getName().toLowerCase().equals(ownerName)) continue;
             petsOfOwnerString += i + " | " + listPet(pets.get(i));
         }

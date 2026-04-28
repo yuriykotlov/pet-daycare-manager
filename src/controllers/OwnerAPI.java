@@ -44,6 +44,13 @@ public class OwnerAPI implements ISerializer {
         }
     }
 
+    public Owner getOwnerById(int id){
+        for (Owner owner : ownerList){
+            if(owner.getId() == id) return owner;
+        }
+        return null;
+    }
+
     public Owner getOwnerByName (String oName){
         int index = retrieveOwnerIndex(oName);
         if (index != -1){
