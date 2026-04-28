@@ -37,7 +37,8 @@ public class Driver {
     public int mainMenu(){
         return ScannerInput.readNextInt("""
                 
-                                Main Menu | Pets Day Care
+                | + + + + + + + + + + + + + + + + + + + + + + + + + + |
+                |               Main Menu | Pets Day Care             |
                 | + + + + + + + + + + + + + + + + + + + + + + + + + + |
                 |                                                     |
                 |   ### Pets Day Care ###                             |
@@ -59,7 +60,8 @@ public class Driver {
 
     public int editPetsMenu(){
         return ScannerInput.readNextInt("""
-                          Edit Pets Registry | Pets Day Care
+                | + + + + + + + + + + + + + + + + + + + + + + + + + + |
+                |         Edit Pets Registry | Pets Day Care          |
                 | + + + + + + + + + + + + + + + + + + + + + + + + + + |
                 |                                                     |
                 |   ### GENERAL ###                                   |
@@ -75,7 +77,8 @@ public class Driver {
 
     public int viewPetsMenu(){
         return ScannerInput.readNextInt("""
-                        View Pets in Registry | Pets Day Care
+                | + + + + + + + + + + + + + + + + + + + + + + + + + + |
+                |       View Pets in Registry | Pets Day Care         |
                 | + + + + + + + + + + + + + + + + + + + + + + + + + + |
                 |                                                     |
                 |   ### GENERAL ###                                   |
@@ -105,10 +108,11 @@ public class Driver {
 
     public int editOwnersMenu(){
         return ScannerInput.readNextInt("""
-                          Edit Owners Registry | Pets Day Care
+                | + + + + + + + + + + + + + + + + + + + + + + + + + + |
+                |         Edit Owners Registry | Pets Day Care        |
                 | + + + + + + + + + + + + + + + + + + + + + + + + + + |
                 |                                                     |
-                |   === GENERAL ===                                   |
+                |   ### GENERAL ###                                   |
                 |   [1] Add a new Owner                               |
                 |   [2] Remove an Owner                               |
                 |   [3] Update an Owner                               |
@@ -121,10 +125,11 @@ public class Driver {
 
     public int viewOwnersMenu(){
         return ScannerInput.readNextInt("""
-                        View Owners in Registry | Pets Day Care
+                | + + + + + + + + + + + + + + + + + + + + + + + + + + |
+                |       View Owners in Registry | Pets Day Care       |
                 | + + + + + + + + + + + + + + + + + + + + + + + + + + |
                 |                                                     |
-                |   === GENERAL ===                                   |
+                |   ### GENERAL ###                                   |
                 |   [1] List all Owner                                |
                 |   [2] List all Owners (names) that start with "..." |
                 |                                                     |
@@ -140,10 +145,11 @@ public class Driver {
 
     public int viewPetsDayCareMenu(){
         return ScannerInput.readNextInt("""
-                               Configure | Pets Day Care
+                | + + + + + + + + + + + + + + + + + + + + + + + + + + |
+                |              Configure | Pets Day Care              |
                 | + + + + + + + + + + + + + + + + + + + + + + + + + + |
                 |                                                     |
-                |   === GENERAL ===                                   |
+                |   ### GENERAL ###                                   |
                 |   [1] Edit 'Pets Day Care' name                     |
                 |   [2] Show Weekly Income                            |
                 |   [3] Show Pets' average days stayed per week       |
@@ -298,12 +304,15 @@ public class Driver {
     }
 
     private char getSex(){
-        char sex = ScannerInput.readNextChar("What is this pet's sex?: ");
-        if(sex != 'M' && sex != 'F'){
-            // Unidentified sex
-            sex = 'U';
+        String sexString = ScannerInput.readNextLine("What is this pet's sex? (Male/Female): ");
+        if(!sexString.isEmpty()){
+            if(sexString.substring(0, 1).toLowerCase().equals("m")){
+                return 'M';
+            } else if(sexString.substring(0, 1).toLowerCase().equals("f")){
+                return 'F';
+            }
         }
-        return sex;
+        return 'U';
     }
 
     private Dog registerDog(String name, int age, Owner owner, int id){
@@ -386,8 +395,8 @@ public class Driver {
             case 3 -> newPet = registerParrot(name, age, owner, id);
         }
 
-        // if id provided isn't -1, it means this pet is an updated version (and a duplicate for now)
-        if(id != -1){
+        // if id is -1 then let the new pet be added to the arraylist automatically
+        if(id == -1){
             System.out.println(petsDayCareAPI.addPet(newPet) ? "Pet " + name + " was successfully added." : "Pet " + name + " was not added due to an error.");
         }
 
@@ -415,11 +424,16 @@ public class Driver {
     private void removePet(){
         System.out.println("         Remove a Pet | Instructions");
         listInstructions();
-        listAllPets();
+        System.out.println(petsDayCareAPI.listAllPets());
 
-        int targetIndex = -1;
-        while(!petsDayCareAPI.isValidPetIndex(targetIndex)){
-            targetIndex = ScannerInput.readNextInt("Enter the index of the pet you want to remove: ");
+        int targetIndex = petsDayCareAPI.getPets().size() + 1;
+        while(targetIndex != -1 && !petsDayCareAPI.isValidPetIndex(targetIndex)){
+            targetIndex = ScannerInput.readNextInt("Enter the index of the pet you want to remove, or -1 to cancel: ");
+        }
+
+        if(targetIndex == -1){
+            System.out.println("Removing pet cancelled.");
+            return;
         }
 
         Pet removedPet = petsDayCareAPI.removePetAtPosition(targetIndex);
@@ -437,11 +451,16 @@ public class Driver {
     private void updatePet(){
         System.out.println("         Update a Pet | Instructions");
         listInstructions();
-        listAllPets();
+        System.out.println(petsDayCareAPI.listAllPets());
 
-        int targetIndex = -1;
-        while(!petsDayCareAPI.isValidPetIndex(targetIndex)){
-            targetIndex = ScannerInput.readNextInt("Enter the index of the pet you want to remove: ");
+        int targetIndex = petsDayCareAPI.getPets().size() + 1;
+        while(targetIndex != -1 && !petsDayCareAPI.isValidPetIndex(targetIndex)){
+            targetIndex = ScannerInput.readNextInt("Enter the index of the pet you want to update, or -1 to cancel: ");
+        }
+
+        if(targetIndex == -1){
+            System.out.println("Updating pet cancelled.");
+            return;
         }
 
         Pet petToUpdate = petsDayCareAPI.getPetByIndex(targetIndex);
@@ -478,7 +497,11 @@ public class Driver {
 
     private void listAllPets(){
         System.out.println();
-        System.out.println(petsDayCareAPI.listAllPets());
+        System.out.println("There are " + petsDayCareAPI.numberOfPets() + " pets in the registry");
+
+        if(getBooleanFromYesOrNo("Do you want to see the full list of pets? (Yes/No):")){
+            System.out.println(petsDayCareAPI.listAllPets());
+        }
     }
 
     private void listAllPetsStayingMoreThanXDays(){
@@ -500,12 +523,20 @@ public class Driver {
 
     private void listAllDogs(){
         System.out.println();
-        System.out.println(petsDayCareAPI.listAllDogs());
+        System.out.println("There are " + petsDayCareAPI.numberOfDogs() + " dogs in the registry");
+
+        if(getBooleanFromYesOrNo("Do you want to see the full list of dogs? (Yes/No):")){
+            System.out.println(petsDayCareAPI.listAllDogs());
+        }
     }
 
     private void listAllDangerousDogs(){
         System.out.println();
-        System.out.println(petsDayCareAPI.listAllDangerousDogs());
+        System.out.println("There are " + petsDayCareAPI.numberOfDangerousDogs() + " (dangerous) dogs in the registry");
+
+        if(getBooleanFromYesOrNo("Do you want to see the full list of (dangerous) dogs? (Yes/No):")){
+            System.out.println(petsDayCareAPI.listAllDangerousDogs());
+        }
     }
 
     private void findSpecificDog(){
@@ -552,17 +583,29 @@ public class Driver {
 
     private void listAllCats(){
         System.out.println();
-        System.out.println(petsDayCareAPI.listAllCats());
+        System.out.println("There are " + petsDayCareAPI.numberOfCats() + " cats in the registry");
+
+        if(getBooleanFromYesOrNo("Do you want to see the full list of cats? (Yes/No):")){
+            System.out.println(petsDayCareAPI.listAllCats());
+        }
     }
 
     private void listAllIndoorCats(){
         System.out.println();
-        System.out.println(petsDayCareAPI.listAllIndoorCats());
+        System.out.println("There are " + petsDayCareAPI.numberOfIndoorCats() + " (indoor) cats in the registry");
+
+        if(getBooleanFromYesOrNo("Do you want to see the full list of (indoor) cats? (Yes/No):")){
+            System.out.println(petsDayCareAPI.listAllIndoorCats());
+        }
     }
 
     private void listAllParrots(){
         System.out.println();
-        System.out.println(petsDayCareAPI.listAllParrots());
+        System.out.println("There are " + petsDayCareAPI.numberOfParrots() + " parrots in the registry");
+
+        if(getBooleanFromYesOrNo("Do you want to see the full list of parrots? (Yes/No):")){
+            System.out.println(petsDayCareAPI.listAllParrots());
+        }
     }
 
     //
@@ -570,7 +613,21 @@ public class Driver {
     //
 
     private Owner addOwner(){
-        return null;
+        System.out.println("\n\t### Owner ###");
+        String name = ScannerInput.readNextLine("What is this owner's name?: ");
+        String phoneNumber = ScannerInput.readNextLine("What is this owner's phone number? (Numbers only): ");
+
+        while(!Utilities.onlyContainsNumbers(phoneNumber)){
+            System.out.println("The phone number provided has letters which are not allowed.");
+            phoneNumber = ScannerInput.readNextLine("What is this owner's phone number? (Numbers only): ");
+        }
+
+        System.out.println();
+
+        Owner owner = new Owner(-1, name, phoneNumber);
+        ownerAPI.addOwner(owner);
+
+        return owner;
     }
 
     private void removeOwner(){

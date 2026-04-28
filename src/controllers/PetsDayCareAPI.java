@@ -171,7 +171,7 @@ public class PetsDayCareAPI implements ISerializer {
 
     public String listPet(Pet pet){
         return pet.getName()
-                + "\n  - Owner: " + pet.getOwner().getName()
+                + "\n  - Owner: " + pet.getOwner()
                 + "\n  - Type of Pet: " + getPetType(pet)
                 + "\n  - Id: " + pet.getId()
                 + "\n  - Age: " + pet.getAge()

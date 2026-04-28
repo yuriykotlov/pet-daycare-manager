@@ -51,10 +51,10 @@ public abstract class Pet {
 
     @Override
     public String toString(){
-        return "Name: " + getName()
-                +" | Age: " + getAge()
-                + " | Owner: " + getOwner().getName()
-                + " | Id: " + getId();
+        return "\n\tName: " + getName()
+                +"\n\t | Age: " + getAge()
+                + "\n\t | Owner: " + getOwner()
+                + "\n\t | Id: " + getId();
     }
 
     //

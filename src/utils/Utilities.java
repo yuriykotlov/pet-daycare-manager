@@ -85,4 +85,8 @@ public class Utilities {
     public static boolean isValidIndex(List list, int indexToCheck){
         return ((indexToCheck >= 0) && (indexToCheck < list.size()));
     }
+
+    public static boolean onlyContainsNumbers(String text) {
+        return (text.matches("[0-9]+"));
+    }
 }

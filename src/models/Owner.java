@@ -1,12 +1,16 @@
 package models;
 
 
+import utils.Utilities;
+
 import java.util.Objects;
 // this class is fully functional
 public class Owner {
-    private int id = 100;// 3 digits - default 100
-    private String name; // <= 30  //number should be stored with no spaces, start with 0 and have 10 digits in ir
-    private String phoneNumber = "087302000";
+    private int id;// 3 digits - default 100
+    private String name; // <= 30
+    private String phoneNumber; // should start with 0, have no spaces and have 10 digits
+
+    private static int nextId = 100;
 
     public Owner(int id, String name, String phoneNumber) {
         setId(id);
@@ -27,11 +31,16 @@ public class Owner {
     }
 
     public void setId(int id) {
-        if (id >=100 && id <= 999)
-            this.id = id;
+        if(id != -1){
+            if (id >=100 && id <= 999){
+                this.id = id;
+            }
+        } else {
+            this.id = nextId;
+            nextId++;
+        }
     }
     public void initName(String name) {
-
         this.name = (name.length()<= 30?
                 name :
                 name.substring(0,30));
@@ -43,7 +52,7 @@ public class Owner {
     }
 
     public void setPhoneNumber(String phoneNumber) {
-        if (onlyContainsNumbers(phoneNumber))
+        if (Utilities.onlyContainsNumbers(phoneNumber))
             this.phoneNumber = phoneNumber;
     }
 
@@ -55,14 +64,9 @@ public class Owner {
         return getId() == owner.getId() && Objects.equals(getName(), owner.getName());
     }
 
-
-    private boolean onlyContainsNumbers(String text) {
-        return (text.matches("[0-9]+"));
-    }
     @Override
     public String toString() {
-        return
-                "Id: " + id + ", name: " + name + ", phone: " + phoneNumber;
+        return "Id: " + id + "| Name: " + name + "| Phone: " + phoneNumber;
 
     }}
 
