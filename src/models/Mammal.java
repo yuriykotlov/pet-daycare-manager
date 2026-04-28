@@ -43,7 +43,7 @@ public abstract class Mammal extends Pet {
         return sex;
     }
     public void setSex(char sex) {
-        if(sex == 'M' || sex == 'F'){
+        if(sex != 'M' && sex != 'F'){
             // Unidentified sex
             sex = 'U';
         }

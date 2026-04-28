@@ -3,7 +3,9 @@ package main;
 import controllers.PetsDayCareAPI;
 import controllers.OwnerAPI;
 import models.*;
+import utils.DogBreedUtility;
 import utils.ScannerInput;
+import utils.Utilities;
 
 import java.io.File;
 import java.util.Scanner;
@@ -40,16 +42,17 @@ public class Driver {
                 [2] View Pet Information
                 
                 ### Owners ###
-                [1] Edit Owner Information
-                [2] View Owner Information
+                [3] Edit Owner Information
+                [4] View Owner Information
                 
                 ### Pets Day Care ###
-                [3] Edit Name
-                [4] Show Weekly Income
-                [5] Get Pets' average days per week stayed
+                [5] Edit Name
+                [6] Show Weekly Income
+                [7] Get Pets' average days stayed per week
                 
-                [3] Load Pets from File
-                [4] Save Pets to File
+                ### Saving/Loading ###
+                [8] Load Pets from File
+                [9] Save Pets to File
                 
                 [0] Exit Application
                 
@@ -144,7 +147,12 @@ public class Driver {
                 case 2: viewPets(viewPetsMenu());
                 case 3: editOwners(editOwnersMenu());
                 case 4: viewOwners(viewOwnersMenu());
-                default: System.out.println("Invalid option, try again.");
+                case 5: editPetsDayCareName();
+                case 6: showWeeklyIncome();
+                case 7: showPetsAverageDaysStayedPerWeek();
+                case 8: loadFile();
+                case 9: saveFile();
+                default: System.out.println(" - Invalid option, try again.");
             }
 
             option = mainMenu();
@@ -154,10 +162,10 @@ public class Driver {
     public void editPets(int option){
         while(option != 0){
             switch(option){
-                case 1: AddPet();
-                case 2: RemovePet();
-                case 3: UpdatePet();
-                default: System.out.println("Invalid option, try again.");
+                case 1: addPet();
+                case 2: removePet();
+                case 3: updatePet();
+                default: System.out.println(" - Invalid option, try again.");
             }
             option = editPetsMenu();
         }
@@ -166,16 +174,16 @@ public class Driver {
     public void viewPets(int option){
         while(option != 0){
             switch(option){
-                case 1: ListAllPets();
-                case 2: ListAllPetsStayingMoreThanXDays();
-                case 3: ListAllPetsBySpecificOwner();
-                case 4: ListAllDogs();
-                case 5: ListAllDangerousDogs();
-                case 6: FindSpecificDog();
-                case 7: ListAllCats();
-                case 8: ListAllIndoorCats();
-                case 9: ListAllParrots();
-                default: System.out.println("Invalid option, try again.");
+                case 1: listAllPets();
+                case 2: listAllPetsStayingMoreThanXDays();
+                case 3: listAllPetsBySpecificOwner();
+                case 4: listAllDogs();
+                case 5: listAllDangerousDogs();
+                case 6: findSpecificDog();
+                case 7: listAllCats();
+                case 8: listAllIndoorCats();
+                case 9: listAllParrots();
+                default: System.out.println(" - Invalid option, try again.");
             }
             option = viewPetsMenu();
         }
@@ -184,10 +192,10 @@ public class Driver {
     public void editOwners(int option){
         while(option != 0){
             switch(option){
-                case 1: AddOwner();
-                case 2: RemoveOwner();
-                case 3: UpdateOwner();
-                default: System.out.println("Invalid option, try again.");
+                case 1: addOwner();
+                case 2: removeOwner();
+                case 3: updateOwner();
+                default: System.out.println(" - Invalid option, try again.");
             }
             option = editOwnersMenu();
         }
@@ -196,14 +204,225 @@ public class Driver {
     public void viewOwners(int option){
         while(option != 0){
             switch(option){
-                case 1: ListAllOwners();
-                case 2: ListAllOwnersWithPrefix();
-                case 3: FindOwnerWithName();
-                case 4: FindOwnerAtIndex();
-                default: System.out.println("Invalid option, try again.");
+                case 1: listAllOwners();
+                case 2: listAllOwnersWithPrefix();
+                case 3: findOwnerWithName();
+                case 4: findOwnerAtIndex();
+                default: System.out.println(" - Invalid option, try again.");
             }
             option = viewOwnersMenu();
         }
+    }
+
+    //
+    //  Pets
+    //
+
+    private boolean getBooleanFromYesOrNo(String prompt){
+        String answer = "?";
+        while(true){
+            if(!prompt.isEmpty()){
+                if(answer.substring(0, 1).toLowerCase().equals("y")){
+                    return true;
+                } else if(answer.substring(0, 1).toLowerCase().equals("n")){
+                    return false;
+                }
+            }
+            answer = ScannerInput.readNextLine(prompt);
+        }
+    }
+
+    private double getWeight(){
+        double weight = 0;
+        while(!Utilities.validRange(weight, 2, 200)){
+            weight = ScannerInput.readNextDouble("What is this pet's weight?: ");
+        }
+        return weight;
+    }
+
+    private char getSex(){
+        char sex = ScannerInput.readNextChar("What is this pet's sex?: ");
+        if(sex != 'M' && sex != 'F'){
+            // Unidentified sex
+            sex = 'U';
+        }
+        return sex;
+    }
+
+    private void addPet(){
+        // first add pet, then ask if there is an owner or not,
+        // and if there is an owner, call the addOwner method
+
+        String name = ScannerInput.readNextLine("\nEnter a name for this pet: ");
+        int age = ScannerInput.readNextInt("Enter an age for this pet: ");
+
+        int animalOption = -1;
+        // make sure a valid option is being chosen
+        while(animalOption < 1 || animalOption > 3){
+            animalOption = ScannerInput.readNextInt("Is this pet a [1] dog, [2] cat, or [3] parrot?: ");
+        }
+
+        boolean addOwner = getBooleanFromYesOrNo("Does this pet have an owner? (Yes/No): ");
+        Owner owner = null;
+
+        if(addOwner){
+            owner = addOwner();
+        }
+
+        Pet newPet = null;
+
+        switch (animalOption){
+            case 1: {
+                // Dog
+                char sex = getSex();
+                boolean isNeutered = getBooleanFromYesOrNo("Is this dog neutered? (Yes/No): ");
+                double weight = getWeight();
+                boolean isVaccinated = getBooleanFromYesOrNo("Is this dog vaccinated? (Yes/No): ");
+
+                // dog specific variables
+                boolean dangerousBreed = getBooleanFromYesOrNo("Is this dog a dangerous breed? (Yes/No): ");
+
+                String breed = "";
+                while(!DogBreedUtility.checkBreed(breed)){
+                    breed = ScannerInput.readNextLine("What breed is this dog?: ");
+                }
+
+                newPet = new Dog(name, age, owner, -1, sex, isNeutered, weight, isVaccinated, dangerousBreed, breed);
+            }
+            case 2: {
+                // Cat
+                char sex = getSex();
+                boolean isNeutered = getBooleanFromYesOrNo("Is this cat neutered? (Yes/No): ");
+                double weight = getWeight();
+                boolean isVaccinated = getBooleanFromYesOrNo("Is this cat vaccinated? (Yes/No): ");
+
+                // cat specific variables
+                String favouriteToy = ScannerInput.readNextLine("What is this cat's favourite toy?: ");
+                boolean indoorCat = getBooleanFromYesOrNo("Is this cat an indoor cat? (Yes/No): ");
+
+                newPet = new Cat(name, age, owner, -1, sex, isNeutered, weight, isVaccinated, favouriteToy, indoorCat);
+            }
+            case 3: {
+                // Parrot
+                double wingSpan = 0;
+                while(!Utilities.validRange(wingSpan, 3, 155.5)){
+                    wingSpan = ScannerInput.readNextDouble("What is this parrot's wingspan?: ");
+                }
+
+                boolean canFly = getBooleanFromYesOrNo("Can this parrot fly? (Yes/No): ");
+
+                // parrot specific variable
+                int vocabularySize = -1;
+                while(vocabularySize < 0){
+                    vocabularySize = ScannerInput.readNextInt("What is this parrot's vocabulary size?: ");
+                }
+
+                newPet = new Parrot(name, age, owner, -1, wingSpan, canFly, vocabularySize);
+            }
+        }
+
+        System.out.println(petsDayCareAPI.addPet(newPet) ? "Pet " + name + " was successfully added." : "Pet " + name + " was not added due to an error.");
+        ScannerInput.readNextLine("\n[... Press any key to continue ...]");
+    }
+
+    private void removePet(){
+
+    }
+
+    private void updatePet(){
+
+    }
+
+    private void listAllPets(){
+
+    }
+
+    private void listAllPetsStayingMoreThanXDays(){
+
+    }
+
+    private void listAllPetsBySpecificOwner(){
+
+    }
+
+    private void listAllDogs(){
+
+    }
+
+    private void listAllDangerousDogs(){
+
+    }
+
+    private void findSpecificDog(){
+
+    }
+
+    private void listAllCats(){
+
+    }
+
+    private void listAllIndoorCats(){
+
+    }
+
+    private void listAllParrots(){
+
+    }
+
+    //
+    //  Owners
+    //
+
+    private Owner addOwner(){
+        return null;
+    }
+
+    private void removeOwner(){
+
+    }
+
+    private void updateOwner(){
+
+    }
+
+    private void listAllOwners(){
+
+    }
+
+    private void listAllOwnersWithPrefix(){
+
+    }
+
+    private void findOwnerWithName(){
+
+    }
+
+    private void findOwnerAtIndex(){
+
+    }
+
+    //
+    //  Pets Day Care
+    //
+
+    private void editPetsDayCareName(){
+
+    }
+
+    private void showWeeklyIncome(){
+
+    }
+
+    private void showPetsAverageDaysStayedPerWeek(){
+
+    }
+
+    private void loadFile(){
+
+    }
+
+    private void saveFile(){
+
     }
 
     //TODO Refer to the tutors instructions for building this class and for the menu.  You are free to deviate in any way
