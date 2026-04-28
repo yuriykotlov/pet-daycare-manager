@@ -14,7 +14,7 @@ public abstract class Pet {
             false, false, false, false, false, false, false
     };
 
-    private final String[] DAYS = {
+    public final String[] DAYS = {
             "Monday",
             "Tuesday",
             "Wednesday",
@@ -102,6 +102,9 @@ public abstract class Pet {
     }
     public void setDaysAttending(boolean[] daysAttending) {
         this.daysAttending = daysAttending;
+    }
+    public void updateSpecificDayAttending(int index, boolean attending){
+        if(index > 0 && index < daysAttending.length) daysAttending[index] = attending;
     }
 
     //

@@ -103,6 +103,7 @@ public class Driver {
                 |                                                     |
                 |   ### Parrots ###                                   |
                 |   [9] List all Parrots                              |
+                |   [10] List all Parrots with X vocabulary level     |
                 |                                                     |
                 |   [0] Back                                          |
                 |                                                     |
@@ -243,6 +244,7 @@ public class Driver {
                 case 7 -> listAllCats();
                 case 8 -> listAllIndoorCats();
                 case 9 -> listAllParrots();
+                case 10 -> listAllParrotsWithXVocabularyLevel();
                 default -> System.out.println(" - Invalid option, try again.");
             }
 
@@ -344,6 +346,15 @@ public class Driver {
             case 3 -> newPet = registerParrot(name, age, owner, id);
         }
 
+        // set days attending
+        System.out.println("\n\t### Days Attending ###");
+        for(int i = 0; i < newPet.getDaysAttending().length; i++){
+            newPet.updateSpecificDayAttending(
+                    i,
+                    getBooleanFromYesOrNo("Is '" + name + "' staying on " + newPet.DAYS[i] + "?")
+            );
+        }
+
         // if id is -1 then let the new pet be added to the arraylist automatically
         if(id == -1){
             System.out.println(petsDayCareAPI.addPet(newPet) ? "Pet " + name + " was successfully added." : "Pet '" + name + "' was not added due to an error.");
@@ -415,15 +426,13 @@ public class Driver {
 
             Pet updatedPet = addPet(petToUpdate.getId());
 
-            // remove original pet as copy was already made
-            Pet removedPet = petsDayCareAPI.removePetAtPosition(targetIndex);
+            // update the target pet with the new pet variables
+            updatedPet = petsDayCareAPI.updatePet(targetIndex, updatedPet);
 
-            // removing original pet result
-            if(removedPet == null){
-                System.out.println("This pet could not be updated, as the original pet wasn't able to be removed due to an error.");
+            // update pet result
+            if(updatedPet == null){
+                System.out.println("This pet could not be updated due to an error.");
             } else{
-                petsDayCareAPI.setPetAtSpecificIndex(updatedPet, targetIndex);
-
                 // display new pet properties according to class
                 System.out.println("The pet at index " + targetIndex + " was updated, as shown below:\n");
                 if(updatedPet instanceof Dog){
@@ -486,6 +495,18 @@ public class Driver {
 
         if(getBooleanFromYesOrNo("Do you want to see the full list of (dangerous) dogs? (Yes/No):")){
             System.out.println(petsDayCareAPI.listAllDangerousDogs());
+        }
+    }
+
+    private void listAllParrotsWithXVocabularyLevel(){
+        System.out.println();
+        int vocabularySize = ScannerInput.readNextInt("Enter the vocabulary size, which will determine a level,\nthat you want to sort by: ");
+
+        System.out.println();
+        System.out.println("There are " + petsDayCareAPI.numberOfParrotsByVocabularySize(vocabularySize) + " parrot(s) in the registry");
+
+        if(getBooleanFromYesOrNo("Do you want to see the full list of parrots? (Yes/No):")){
+            System.out.println(petsDayCareAPI.listParrotsByVocabularySize(vocabularySize));
         }
     }
 
