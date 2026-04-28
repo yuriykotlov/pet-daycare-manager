@@ -16,6 +16,6 @@ public class DogBreedUtility {
         dogBreeds.add("ROTTWEILER");
         dogBreeds.add("PIT BULL");
 
-        return dogBreeds.contains(breed.toLowerCase());
+        return dogBreeds.contains(breed.toUpperCase());
     }
 }

@@ -108,6 +108,10 @@ public class PetsDayCareAPI implements ISerializer {
         return pets.add(newPet);
     }
 
+    public Pet setPetAtSpecificIndex(Pet pet, int targetIndex){
+        return pets.set(targetIndex, pet);
+    }
+
     //-------------------------------------
     //  Pet ARRAYLIST - Utility methods
     //-------------------------------------
@@ -165,8 +169,8 @@ public class PetsDayCareAPI implements ISerializer {
                 + "\n  - Is Vaccinated: " + mammal.isVaccinated();
     }
 
-    private String listPet(Pet pet){
-        return " | " + pet.getName()
+    public String listPet(Pet pet){
+        return pet.getName()
                 + "\n  - Owner: " + pet.getOwner().getName()
                 + "\n  - Type of Pet: " + getPetType(pet)
                 + "\n  - Id: " + pet.getId()
@@ -175,10 +179,10 @@ public class PetsDayCareAPI implements ISerializer {
                 + "\n";
     }
 
-    private String listDog(Pet pet){
+    public String listDog(Pet pet){
         if(!(pet instanceof Dog dog)) return "";
 
-        return " | " + dog.getName()
+        return dog.getName()
                 + "\n  - Owner: " + dog.getOwner().getName()
                 + "\n  - Id: " + dog.getId()
                 + "\n  - Age: " + dog.getAge()
@@ -190,11 +194,42 @@ public class PetsDayCareAPI implements ISerializer {
                 + "\n";
     }
 
+    public String listCat(Pet pet){
+        if(!(pet instanceof Cat cat)) return "";
+
+        return cat.getName()
+                + "\n  - Owner: " + cat.getOwner().getName()
+                + "\n  - Id: " + cat.getId()
+                + "\n  - Age: " + cat.getAge()
+                + getMammalGeneralInfo(cat)
+                + "\n  - Favourite Toy: " + cat.getFavouriteToy()
+                + "\n  - Is an indoor cat: " + Utilities.booleanToYN(cat.isIndoorCat())
+                + "\n";
+    }
+
+    public String listParrot(Pet pet){
+        if(!(pet instanceof Parrot parrot)) return "";
+
+        return parrot.getName()
+                + "\n  - Owner: " + parrot.getOwner().getName()
+                + "\n  - Id: " + parrot.getId()
+                + "\n  - Age: " + parrot.getAge()
+                + "\n  - Wing Span: " + parrot.getWingSpan()
+                + "\n  - Can Fly: " + Utilities.booleanToYN(parrot.canFly())
+                + "\n  - Level of Vocabulary Size: " + parrot.getVocabularySize()
+                + "\n  - Days Attending: " + parrot.displayStringOfDaysAttending()
+                + "\n";
+    }
+
     public String listAllPets(){
         String petsString = "";
 
         for(int i = 0; i < pets.size(); i++){
-            petsString += i + listPet(pets.get(i));
+            petsString += i + " | " + listPet(pets.get(i));
+        }
+
+        if(petsString.isEmpty()){
+            return "There are no pets in the register.";
         }
 
         return petsString;
@@ -206,18 +241,31 @@ public class PetsDayCareAPI implements ISerializer {
         for(int i = 0; i < pets.size(); i++){
             if(!(pets.get(i) instanceof Cat cat)) continue;
 
-            catsString += i + " | " + cat.getName()
-                    + "\n  - Owner: " + cat.getOwner().getName()
-                    + "\n  - Id: " + cat.getId()
-                    + "\n  - Age: " + cat.getAge()
-                    + getMammalGeneralInfo(cat)
-                    + "\n  - Favourite Toy: " + cat.getFavouriteToy()
-                    + "\n  - Is an Indoor Cat: " + Utilities.booleanToYN(cat.isIndoorCat())
-                    + "\n  - Days Attending: " + cat.displayStringOfDaysAttending()
-                    + "\n";
+            catsString += i + " | " + listCat(cat);
+        }
+
+        if(catsString.isEmpty()){
+            return "There are no cats in the register.";
         }
 
         return catsString;
+    }
+
+    public String listAllIndoorCats(){
+        String indoorCatsString = "";
+
+        for(int i = 0; i < pets.size(); i++){
+            if(!(pets.get(i) instanceof Cat cat)) continue;
+            if(!cat.isIndoorCat()) continue;
+
+            indoorCatsString += i + " | " + listCat(cat);
+        }
+
+        if(indoorCatsString.isEmpty()){
+            return "There are no (indoor) cats in the register.";
+        }
+
+        return indoorCatsString;
     }
 
     public String listAllDogs(){
@@ -226,30 +274,14 @@ public class PetsDayCareAPI implements ISerializer {
         for(int i = 0; i < pets.size(); i++){
             if(!(pets.get(i) instanceof Dog dog)) continue;
 
-            dogsString += i + listDog(dog);
+            dogsString += i + " | " + listDog(dog);
+        }
+
+        if(dogsString.isEmpty()){
+            return "There are no dogs in the register.";
         }
 
         return dogsString;
-    }
-
-    public String listAllParrots(){
-        String parrotsString = "";
-
-        for(int i = 0; i < pets.size(); i++){
-            if(!(pets.get(i) instanceof Parrot parrot)) continue;
-
-            parrotsString += i + " | " + parrot.getName()
-                    + "\n  - Owner: " + parrot.getOwner().getName()
-                    + "\n  - Id: " + parrot.getId()
-                    + "\n  - Age: " + parrot.getAge()
-                    + "\n  - Wing Span: " + parrot.getWingSpan()
-                    + "\n  - Can Fly: " + Utilities.booleanToYN(parrot.canFly())
-                    + "\n  - Level of Vocabulary Size: " + parrot.getVocabularySize()
-                    + "\n  - Days Attending: " + parrot.displayStringOfDaysAttending()
-                    + "\n";
-        }
-
-        return parrotsString;
     }
 
     public String listAllDangerousDogs(){
@@ -259,7 +291,11 @@ public class PetsDayCareAPI implements ISerializer {
             if(!(pets.get(i) instanceof Dog dog)) continue;
             if(!dog.isDangerousBreed()) continue;
 
-            dangerousDogsString += i + listDog(dog);
+            dangerousDogsString += i + " | " + listDog(dog);
+        }
+
+        if(dangerousDogsString.isEmpty()){
+            return "There are no (dangerous) dogs in the register.";
         }
 
         return dangerousDogsString;
@@ -270,10 +306,30 @@ public class PetsDayCareAPI implements ISerializer {
 
         for(int i = 0; i < pets.size(); i++){
             if(!pets.get(i).getOwner().getName().toLowerCase().equals(ownerName)) continue;
-            petsOfOwnerString += i + listPet(pets.get(i));
+            petsOfOwnerString += i + " | " + listPet(pets.get(i));
+        }
+
+        if(petsOfOwnerString.isEmpty()){
+            return "There are no pets in the register that are owned by " + ownerName + ".";
         }
 
         return petsOfOwnerString;
+    }
+
+    public String listAllParrots(){
+        String parrotsString = "";
+
+        for(int i = 0; i < pets.size(); i++){
+            if(!(pets.get(i) instanceof Parrot parrot)) continue;
+
+            parrotsString += i + " | " + listParrot(parrot);
+        }
+
+        if(parrotsString.isEmpty()){
+            return "There are no parrots in the register.";
+        }
+
+        return parrotsString;
     }
 
     public String listAllPetsThatStayMoreThanXDays(int daysStayed){
@@ -281,7 +337,7 @@ public class PetsDayCareAPI implements ISerializer {
 
         for(int i = 0; i < pets.size(); i++){
             if(pets.get(i).numOfDaysAttending() <= daysStayed) continue;
-            petsThatAreStayingString += i + listPet(pets.get(i));
+            petsThatAreStayingString += i + " | " + listPet(pets.get(i));
         }
 
         if(petsThatAreStayingString.isEmpty()){
@@ -423,6 +479,15 @@ public class PetsDayCareAPI implements ISerializer {
             }
         }
         return null;
+    }
+
+    public int findPetPositionInArrayWithId(int id){
+        for(int i = 0; i < pets.size(); i++){
+            if(pets.get(i).getId() == id){
+                return i;
+            }
+        }
+        return -1;
     }
 
     //--------------------------------
