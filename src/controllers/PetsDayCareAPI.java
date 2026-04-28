@@ -1,5 +1,3 @@
- //TODO - Uncomment when you are ready to go
-
 package controllers;
 
 import com.thoughtworks.xstream.XStream;
@@ -11,7 +9,6 @@ import utils.ISerializer;
 
 import java.io.*;
 import java.util.ArrayList;
-
 
 public class PetsDayCareAPI implements ISerializer {
     private ArrayList<Pet> pets;
@@ -435,11 +432,27 @@ public class PetsDayCareAPI implements ISerializer {
     // NOTE : THESE MUST BE WRITTEN WITHOUT THE USE OF THE SORT LIBRARY. If in doubt, just ask.
 
     public void sortPetsById(){
-
+        for(int i = pets.size() - 1; i >= 0; i--){
+            int largestIndex = i;
+            for(int j = 0; j < i; j++){
+                if(pets.get(j).getId() > pets.get(largestIndex).getId()){
+                    largestIndex = j;
+                }
+            }
+            swapPets(i, largestIndex);
+        }
     }
 
     public void sortPetsByName(){
-
+        for(int i = pets.size() - 1; i >= 0; i--){
+            int largestIndex = i;
+            for(int j = 0; j < i; j++){
+                if(pets.get(j).getName().compareTo(pets.get(largestIndex).getName()) > 0){
+                    largestIndex = j;
+                }
+            }
+            swapPets(i, largestIndex);
+        }
     }
 
     private void swapPets(int position1, int position2){
@@ -463,8 +476,10 @@ public class PetsDayCareAPI implements ISerializer {
             }
         }
 
-        pets.set(pet1Position, pet2);
-        pets.set(pet2Position, pet1);
+        if(pet1Position != -1 && pet2Position != -1){
+            pets.set(pet1Position, pet2);
+            pets.set(pet2Position, pet1);
+        }
     }
 
     //---------------------------------
