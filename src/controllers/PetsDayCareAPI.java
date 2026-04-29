@@ -67,7 +67,7 @@ public class PetsDayCareAPI implements ISerializer {
      * @param name The new name for the Pets Day Care
      */
     public void setName(String name) {
-        if(!Utilities.validStringlength(name, 10)){
+        if(Utilities.validStringlength(name, 10)){
             this.name = name;
         }
     }
@@ -115,7 +115,7 @@ public class PetsDayCareAPI implements ISerializer {
      * @param name The name that is first used to initialise the PetsDayCareAPI class
      */
     private void initName(String name){
-        this.name = name.length() <= 20 ? name : Utilities.truncateString(name ,20);
+        this.name = name.length() <= 20 ? name : Utilities.truncateString(name ,10);
     }
 
     /**
@@ -199,7 +199,7 @@ public class PetsDayCareAPI implements ISerializer {
      */
     public Pet getPetByName(String targetPetName){
         for(Pet pet : pets){
-            if(pet.getName().toLowerCase().equals(targetPetName)){
+            if(pet.getName().toLowerCase().equals(targetPetName.toLowerCase())){
                 return pet;
             }
         }
@@ -255,8 +255,8 @@ public class PetsDayCareAPI implements ISerializer {
 
         return "\n  - Sex: " + mammal.getSex()
                 + " | Weight: " + mammal.getWeight()
-                + " | Is Neutered: " + mammal.isNeutered()
-                + " | Is Vaccinated: " + mammal.isVaccinated();
+                + " | Is Neutered: " + Utilities.booleanToYN(mammal.isNeutered())
+                + " | Is Vaccinated: " + Utilities.booleanToYN(mammal.isVaccinated());
     }
 
     // Listing specific pet provided
@@ -498,7 +498,7 @@ public class PetsDayCareAPI implements ISerializer {
 
         for(int i = 0; i < pets.size(); i++){
             if(pets.get(i).getOwner() == null) continue;
-            if(!pets.get(i).getOwner().getName().toLowerCase().equals(ownerName)) continue;
+            if(!pets.get(i).getOwner().getName().toLowerCase().equals(ownerName.toLowerCase())) continue;
             petsOfOwnerString += i + " | " + listPet(pets.get(i));
         }
 
@@ -717,7 +717,7 @@ public class PetsDayCareAPI implements ISerializer {
     /**
      * Sorts all pets in the pets arraylist by their Id in a descending manner
      */
-    public void sortPetsById(){
+    private void sortPetsById(){
         for(int i = pets.size() - 1; i >= 0; i--){
             int largestIndex = i;
             for(int j = 0; j < i; j++){
@@ -732,7 +732,7 @@ public class PetsDayCareAPI implements ISerializer {
     /**
      * Sorts all pets in the pets arraylist by their Name in a descending manner
      */
-    public void sortPetsByName(){
+    private void sortPetsByName(){
         for(int i = pets.size() - 1; i >= 0; i--){
             int largestIndex = i;
             for(int j = 0; j < i; j++){
@@ -750,7 +750,7 @@ public class PetsDayCareAPI implements ISerializer {
      * @param position1 The first position to swap
      * @param position2 The second position to swap
      */
-    private void swapPets(int position1, int position2){
+    public void swapPets(int position1, int position2){
         if(!isValidPetIndex(position1) || !isValidPetIndex(position2)) return;
 
         Pet pet1 = pets.get(position1);
@@ -765,7 +765,7 @@ public class PetsDayCareAPI implements ISerializer {
      * @param pet1 The first pet to swap
      * @param pet2 The second pet to swap
      */
-    private void swapPets(Pet pet1, Pet pet2){
+    public void swapPets(Pet pet1, Pet pet2){
         int pet1Position = -1;
         int pet2Position = -1;
 
