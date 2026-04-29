@@ -161,7 +161,12 @@ public class PetsDayCareAPI implements ISerializer {
      * @return Returns a boolean whether adding was successful or not
      */
     public boolean addPet(Pet newPet){
-        return pets.add(newPet);
+        boolean successful = pets.add(newPet);
+
+        // make sure the arraylist is correctly sorted
+        sortPetsById();
+
+        return successful;
     }
 
     //-------------------------------------
@@ -688,7 +693,7 @@ public class PetsDayCareAPI implements ISerializer {
         for(Pet pet : pets){
             if(!(pet instanceof Dog dog)) continue;
             if(pet.getOwner() == null) continue;
-            if(pet.getOwner().getName().toLowerCase().equals(ownerName) && dog.getBreed().equals(breed) && pet.getAge() == age){
+            if(pet.getOwner().getName().toLowerCase().equals(ownerName.toLowerCase()) && dog.getBreed().toLowerCase().equals(breed.toLowerCase()) && pet.getAge() == age){
                 return pet;
             }
         }
@@ -717,7 +722,7 @@ public class PetsDayCareAPI implements ISerializer {
     /**
      * Sorts all pets in the pets arraylist by their Id in a descending manner
      */
-    private void sortPetsById(){
+    public void sortPetsById(){
         for(int i = pets.size() - 1; i >= 0; i--){
             int largestIndex = i;
             for(int j = 0; j < i; j++){
@@ -732,7 +737,7 @@ public class PetsDayCareAPI implements ISerializer {
     /**
      * Sorts all pets in the pets arraylist by their Name in a descending manner
      */
-    private void sortPetsByName(){
+    public void sortPetsByName(){
         for(int i = pets.size() - 1; i >= 0; i--){
             int largestIndex = i;
             for(int j = 0; j < i; j++){

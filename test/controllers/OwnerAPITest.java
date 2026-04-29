@@ -35,6 +35,9 @@ class OwnerAPITest {
 
         Owner newOwner = new Owner(103, "Luke", "0874444444");
         assertTrue(api.addOwner(newOwner));
+
+        assertNotNull(api.getOwnerById(103));
+        assertNull(api.getOwnerById(-1));
     }
 
     @Test

@@ -1,0 +1,41 @@
+<object-stream>
+  <list>
+    <models.Dog>
+      <name>Rex</name>
+      <age>5</age>
+      <owner>
+        <id>100</id>
+        <name>John</name>
+        <phoneNumber>0871234567</phoneNumber>
+      </owner>
+      <id>1000</id>
+      <daysAttending>
+        <boolean>false</boolean>
+        <boolean>false</boolean>
+        <boolean>false</boolean>
+        <boolean>false</boolean>
+        <boolean>false</boolean>
+        <boolean>false</boolean>
+        <boolean>false</boolean>
+      </daysAttending>
+      <DAYS>
+        <string>Monday</string>
+        <string>Tuesday</string>
+        <string>Wednesday</string>
+        <string>Thursday</string>
+        <string>Friday</string>
+        <string>Saturday</string>
+        <string>Sunday</string>
+      </DAYS>
+      <sex>M</sex>
+      <neutered>true</neutered>
+      <weight>10.0</weight>
+      <vaccinated>false</vaccinated>
+      <NONDANGEROUS__DAILY__RATE>30.0</NONDANGEROUS__DAILY__RATE>
+      <DANGEROUS__DAILY__RATE>40.0</DANGEROUS__DAILY__RATE>
+      <dangerousBreed>false</dangerousBreed>
+      <currentRate>30.0</currentRate>
+      <breed>Labrador Retriever</breed>
+    </models.Dog>
+  </list>
+</object-stream>
