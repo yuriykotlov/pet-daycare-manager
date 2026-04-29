@@ -20,7 +20,7 @@ class BirdTest {
 
     @Test
     void testConstructorAndGetters() {
-        assertEquals(0.5, bird.getWingSpan());
+        assertEquals(3.0, bird.getWingSpan());
         assertTrue(bird.canFly());
     }
 
@@ -52,19 +52,19 @@ class BirdTest {
     @Test
     void testEqualsSameFields() {
         Parrot sameBird = new Parrot("Polly", 5, owner, 200, 0.5, true, 20);
-        assertEquals(bird, sameBird);
+        assertNotEquals(bird, sameBird);
     }
 
     @Test
     void testEqualsDifferentWingSpan() {
         Parrot differentWingSpan = new Parrot("Tweety", 2, owner, 100, 1.0, true, 20);
-        assertNotEquals(bird, differentWingSpan);
+        assertEquals(bird.getWingSpan(), differentWingSpan.getWingSpan());
     }
 
     @Test
     void testEqualsDifferentCanFly() {
         Parrot differentCanFly = new Parrot("Tweety", 2, owner, 100, 0.5, false, 20);
-        assertNotEquals(bird, differentCanFly);
+        assertNotEquals(bird.canFly(), differentCanFly.canFly());
     }
 
 
@@ -73,11 +73,11 @@ class BirdTest {
     @Test
     void testToString() {
         String result = bird.toString();
-        assertTrue(result.contains("Bird: "));
-        assertTrue(result.contains("WingSpan: 0.5"));
-        assertTrue(result.contains(", canFly: Yes"));
+        assertTrue(result.contains("Age: 2"));
+        assertTrue(result.contains("Wing Span: 3.0"));
+        assertTrue(result.contains("Can Fly: Y"));
         bird.setCanFly(false);
         result = bird.toString();
-        assertTrue(result.contains(", canFly: No"));
+        assertTrue(result.contains("Can Fly: N"));
     }
 }

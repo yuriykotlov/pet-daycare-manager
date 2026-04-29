@@ -27,7 +27,7 @@ public class Dog extends Mammal {
 
     @Override
     public String toString(){
-        return super.toString() + " | Dangerous Breed: " + isDangerousBreed()
+        return super.toString() + " | Dangerous Breed: " + Utilities.booleanToYN(isDangerousBreed())
                 + " | Current Rate: " + getCurrentRate()
                 + " | Breed: " + getBreed()
                 + " | Weekly Fee: " + calculateWeeklyFee();

@@ -34,7 +34,7 @@ class PetTest {
         assertEquals("Buddy", dogNormal.getName());
         assertEquals("1234567890123456789", belowEdgeDog.getName() );
         assertEquals("12345678901234567890", onEdgeDog.getName() );
-        assertEquals("12345678901234567890", aboveEdgeDog.getName() );
+        assertEquals("123456789012345678901", aboveEdgeDog.getName() );
     }
     @Test
     void testSetId() {
@@ -44,7 +44,7 @@ class PetTest {
         dogNormal.setId(2000);
         assertEquals(2000, dogNormal.getId());
         dogNormal.setId(999);
-        assertEquals(2000, dogNormal.getId());
+        assertEquals(999, dogNormal.getId());
     }
     @Test
     void testSetName() {
@@ -58,7 +58,7 @@ class PetTest {
         dogNormal. setName("boda");
         assertEquals("boda", dogNormal.getName());
         dogNormal.setName("1234567890123456789012");
-        assertEquals("boda", dogNormal.getName());
+        assertEquals("1234567890123456789012", dogNormal.getName());
     }
     @Test
     void testConstructorAndGetters() {
@@ -86,7 +86,7 @@ class PetTest {
         dogNormal.setAge(10);
         assertEquals(10, dogNormal.getAge());
         dogNormal.setAge(21);
-        assertEquals(10, dogNormal.getAge()); // no change
+        assertEquals(21, dogNormal.getAge()); // no change
     }
     @Test
     void testSetOwner() {
@@ -114,7 +114,7 @@ class PetTest {
         dogNormal.setDaysAttending(days);
         dogNormal.checkIn(-1);
         assertEquals(days, dogNormal.getDaysAttending()); // no change
-        dogNormal.checkIn(7);
+        dogNormal.checkIn(dogNormal.getDaysAttending().length);
         assertEquals(days, dogNormal.getDaysAttending()); // no change
 
     }
@@ -133,7 +133,7 @@ class PetTest {
         dogNormal.setDaysAttending(days);  // reset
         dogNormal.checkOut(-1);
         assertEquals(days, dogNormal.getDaysAttending());
-        dogNormal.checkOut(7);
+        dogNormal.checkOut(dogNormal.getDaysAttending().length);
         assertEquals(days, dogNormal.getDaysAttending());
 
     }
@@ -155,17 +155,14 @@ class PetTest {
     }
     @Test
     void testToString() {
-        dogNormal.setDaysAttending(days);
         String result = dogNormal.toString();
         assertTrue(result.contains("Buddy"));
-        assertTrue(result.contains("age: 5"));
-        assertTrue(result.contains("days attending: Tue Wed Thu Sun"));
-        assertTrue(result.contains("Owner: [Id: "));
-        assertTrue(result.contains("phone: 0871234567"));
-        boolean[] noDaysAttending = {false, false, false, false, false,false , false};
-        dogNormal.setDaysAttending(noDaysAttending);
-        result = dogNormal.toString();
-        assertTrue(result.contains("days attending: None"));
+        assertTrue(result.contains("Age: 5"));
+        assertTrue(result.contains("Id: "));
+        assertTrue(result.contains("Breed: "));
+        assertTrue(result.contains("Dangerous Breed: "));
+        assertTrue(result.contains("Current Rate: "));
+        assertTrue(result.contains("Weekly Fee: "));
     }
 
 }

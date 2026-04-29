@@ -24,18 +24,18 @@ class MammalTest {
     @Test
     void testConstructorAndGetters() {
         assertEquals('M', dog.getSex());
-        assertTrue(dog.isVaccinated());
+        assertFalse(dog.isVaccinated());
         assertEquals(10, dog.getWeight());
-        assertFalse(dog.isNeutered());
+        assertTrue(dog.isNeutered());
     }
 
     @Test
     void testConstructorWithFemaleSex() {
         Dog female = new Dog("Bella", 3, owner, 1001, 'F', false, 8.5, true, false, "Poodle");
         assertEquals('F', female.getSex());
-        assertFalse(female.isVaccinated());
+        assertTrue(female.isVaccinated());
         assertEquals(8.5, female.getWeight());
-        assertTrue(female.isNeutered());
+        assertFalse(female.isNeutered());
     }
 
     // -----------------------------------------------------------------------
@@ -108,15 +108,16 @@ class MammalTest {
 
     @Test
     void testSetWeightZero() {
+        // if not valid weight then the weight is not changed at all
         dog.setWeight(0.0);
-        assertEquals(0.0, dog.getWeight());
+        assertEquals(10.0, dog.getWeight());
     }
 
     @Test
     void testSetWeightNegativeValue() {
-        // Mammal.setWeight has no validation; negative value is accepted
+        // Mammal.setWeight only sets value if valid
         dog.setWeight(-5.0);
-        assertEquals(-5.0, dog.getWeight());
+        assertEquals(10.0, dog.getWeight());
     }
 
     @Test
@@ -169,19 +170,18 @@ class MammalTest {
     @Test
     void testToStringContainsMammalFieldLabels() {
         String result = dog.toString();
-        assertTrue(result.contains("sex: "));
-        assertTrue(result.contains("vaccinated: "));
-        assertTrue(result.contains("neutered: "));
-        assertTrue(result.contains("weight: "));
+        assertTrue(result.contains("Sex: "));
+        assertTrue(result.contains("Vaccinated: "));
+        assertTrue(result.contains("Neutered: "));
+        assertTrue(result.contains("Weight: "));
     }
 
 
     @Test
     void testToStringVaccinatedAndNeuteredUsesYesNo() {
-        // setUp: vaccinated=true, neutered=false
         String result = dog.toString();
-        assertTrue(result.contains("vaccinated: Yes"));
-        assertTrue(result.contains("neutered: No"));
+        assertTrue(result.contains("Vaccinated: N"));
+        assertTrue(result.contains("Neutered: Y"));
     }
 
     @Test
@@ -191,8 +191,8 @@ class MammalTest {
         dog.setNeutered(true);
 
         String result = dog.toString();
-        assertTrue(result.contains("sex: F"));
-        assertTrue(result.contains("vaccinated: No"));
-        assertTrue(result.contains("neutered: Yes"));
+        assertTrue(result.contains("Sex: F"));
+        assertTrue(result.contains("Vaccinated: N"));
+        assertTrue(result.contains("Neutered: Y"));
     }
 }

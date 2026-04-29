@@ -30,9 +30,9 @@ public abstract class Mammal extends Pet {
     @Override
     public String toString(){
         return super.toString() + " | Sex: " + getSex()
-                + " | Neutered: " + isNeutered()
+                + " | Neutered: " + Utilities.booleanToYN(isNeutered())
                 + " | Weight: " + getWeight()
-                + "kg | Vaccinated: " + isVaccinated();
+                + "kg | Vaccinated: " + Utilities.booleanToYN(isVaccinated());
     }
 
     //
@@ -43,11 +43,9 @@ public abstract class Mammal extends Pet {
         return sex;
     }
     public void setSex(char sex) {
-        if(sex != 'M' && sex != 'F'){
-            // Unidentified sex
-            sex = 'U';
+        if(Character.toLowerCase(sex) == 'm' || Character.toLowerCase(sex) == 'f'){
+            this.sex = Character.toUpperCase(sex);
         }
-        this.sex = sex;
     }
 
     public boolean isNeutered() {

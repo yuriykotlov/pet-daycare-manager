@@ -112,13 +112,13 @@ public abstract class Pet {
     //
 
     public void checkIn(int dayIndex){
-        if(Utilities.validRange(dayIndex, 0, 7)){
+        if(Utilities.validRange(dayIndex, 0, 6)){
             daysAttending[dayIndex] = true;
         }
     }
 
     public void checkOut(int dayIndex){
-        if(Utilities.validRange(dayIndex, 0, 7)){
+        if(Utilities.validRange(dayIndex, 0, 6)){
             daysAttending[dayIndex] = false;
         }
     }

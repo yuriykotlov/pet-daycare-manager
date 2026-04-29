@@ -20,7 +20,7 @@ public abstract class Bird extends Pet {
     @Override
     public String toString(){
         return super.toString() + " | Wing Span: " + wingSpan
-                + " | Can Fly: " + canFly;
+                + " | Can Fly: " + Utilities.booleanToYN(canFly);
     }
 
     //
