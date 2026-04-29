@@ -14,7 +14,7 @@ class MammalTest {
     @BeforeEach
     void setUp() {
         owner = new Owner(123, "John Doe", "098666736");
-        dog = new Dog("Rex", 5, owner, 1000, 'M', true, 10, false, "Lab", false);
+        dog = new Dog("Rex", 5, owner, 1000, 'M', true, 10, false, false, "Labrador Retriever");
     }
 
     // -----------------------------------------------------------------------
@@ -31,7 +31,7 @@ class MammalTest {
 
     @Test
     void testConstructorWithFemaleSex() {
-        Dog female = new Dog("Bella", 3, owner, 1001, 'F', false, 8.5, true, "Poodle", false);
+        Dog female = new Dog("Bella", 3, owner, 1001, 'F', false, 8.5, true, false, "Poodle");
         assertEquals('F', female.getSex());
         assertFalse(female.isVaccinated());
         assertEquals(8.5, female.getWeight());
@@ -91,7 +91,7 @@ class MammalTest {
 
     @Test
     void testSetVaccinatedToTrue() {
-        Dog unvaccinated = new Dog("Spot", 2, owner, 1002, 'M', false, 5, false, "Beagle", false);
+        Dog unvaccinated = new Dog("Spot", 2, owner, 1002, 'M', false, 5, false, false, "Beagle");
         unvaccinated.setVaccinated(true);
         assertTrue(unvaccinated.isVaccinated());
     }

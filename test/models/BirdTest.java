@@ -21,7 +21,7 @@ class BirdTest {
     @Test
     void testConstructorAndGetters() {
         assertEquals(0.5, bird.getWingSpan());
-        assertTrue(bird.isCanFly());
+        assertTrue(bird.canFly());
     }
 
     // --- Setters ---
@@ -35,7 +35,7 @@ class BirdTest {
     @Test
     void testSetCanFly() {
         bird.setCanFly(false);
-        assertFalse(bird.isCanFly());
+        assertFalse(bird.canFly());
     }
 
     // --- equals() ---

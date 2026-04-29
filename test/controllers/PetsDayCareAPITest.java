@@ -34,8 +34,8 @@ class PetsDayCareAPITest {
     void testConstructorAndGetters() {
         assertEquals("HappyPets", validAPI.getName());
         assertEquals(20, validAPI.getMaxNumberOfPets());
-        assertNotNull(validAPI.getPetsArray());
-        assertEquals(0, validAPI.getPetsArray().size());
+        assertNotNull(validAPI.getPets());
+        assertEquals(0, validAPI.getPets().size());
     }
 
     // ----------------------------
@@ -80,13 +80,13 @@ class PetsDayCareAPITest {
         ArrayList<Pet> pets = new ArrayList<>();
 
         Owner owner = new Owner(100, "John", "0871234567");
-        Dog dog = new Dog("Rex", 5, owner, 1000, 'M', true, 10, false, "Lab", false);
+        Dog dog = new Dog("Rex", 5, owner, 1000, 'M', true, 10, false, false, "Labrador Retriever");
 
         pets.add(dog);
 
-        validAPI.setPetsArray(pets);
+        validAPI.setPets(pets);
 
-        assertEquals(1, validAPI.getPetsArray().size());
-        assertEquals(dog, validAPI.getPetsArray().get(0));
+        assertEquals(1, validAPI.getPets().size());
+        assertEquals(dog, validAPI.getPets().get(0));
     }
 }

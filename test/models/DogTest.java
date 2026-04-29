@@ -13,7 +13,7 @@ class DogTest {
     @BeforeEach
     void setUp() {
         owner = new Owner(1234, "John Doe", "12345678");
-        dog = new Dog("Rex", 5, owner, 1000, 'M', true, 10, false, "Labrador", false);
+        dog = new Dog("Rex", 5, owner, 1000, 'M', true, 10, false, false, "Labrador Retriever");
     }
 
     @Test
@@ -65,10 +65,10 @@ class DogTest {
 
     @Test
     void testEquals() {
-        Dog sameDog = new Dog("Max", 3, owner, 2000, 'F', true, 12, true, "Labrador", false);
+        Dog sameDog = new Dog("Max", 3, owner, 2000, 'F', true, 12, true, false, "Labrador Retriever");
         assertEquals(dog, sameDog);
 
-        Dog differentDog = new Dog("Buddy", 2, owner, 3000, 'M', true, 8, false, "Bulldog", false);
+        Dog differentDog = new Dog("Buddy", 2, owner, 3000, 'M', true, 8, false, false, "Bulldog");
         assertNotEquals(dog, differentDog);
     }
 
@@ -83,7 +83,7 @@ class DogTest {
 
     @Test
     void testEqualsSameBreedDifferentDangerousBreed() {
-        Dog dangerousDog = new Dog("Fang", 4, owner, 4000, 'M', true, 15, false, "Labrador", true);
+        Dog dangerousDog = new Dog("Fang", 4, owner, 4000, 'M', true, 15, false, true, "Labrador Retriever");
         assertNotEquals(dog, dangerousDog);
     }
 }

@@ -15,10 +15,10 @@ class PetTest {
     @BeforeEach
     void setUp() {
         owner = new Owner(100, "John Doe", "0871234567");
-        dogNormal = new Dog("Buddy", 5, owner, 1000, 'M', true, 10, false, "Lab", false);
-        belowEdgeDog = new Dog("1234567890123456789",10, owner,1002,  'F', true, 199, false, "Labrador Retriever", false);
-        onEdgeDog = new Dog("12345678901234567890", 3, owner, 1001, 'M', true, 20, false, "BullDog", true);
-        aboveEdgeDog = new Dog("123456789012345678901", 4, owner, 1004, 'F', false, 99, true, "BullDog",true );
+        dogNormal = new Dog("Buddy", 5, owner, 1000, 'M', true, 10, false, false, "Labrador Retriever");
+        belowEdgeDog = new Dog("1234567890123456789",10, owner,1002,  'F', true, 199, false, false, "Labrador Retriever");
+        onEdgeDog = new Dog("12345678901234567890", 3, owner, 1001, 'M', true, 20, false, true, "Bulldog");
+        aboveEdgeDog = new Dog("123456789012345678901", 4, owner, 1004, 'F', false, 99, true, true, "Bulldog");
         days = new boolean[7];
         days[0]  = false; //Monday
         days[1]  = true;
