@@ -156,12 +156,15 @@ public class Driver {
                 |                                                     |
                 |   ### GENERAL ###                                   |
                 |   [1] Edit 'Pets Day Care' name                     |
-                |   [2] Show Weekly Income                            |
-                |   [3] Show Pets' average days stayed per week       |
+                |   [2] Edit maximum amount of pets allowed           |
+                |                                                     |
+                |   ### Statistics ###                                |
+                |   [3] Show Weekly Income                            |
+                |   [4] Show Pets' average days stayed per week       |
                 |                                                     |
                 |   ### Saving/Loading ###                            |
-                |   [4] Load Pets from File                           |
-                |   [5] Save Pets to File                             |
+                |   [5] Load Pets from File                           |
+                |   [6] Save Pets to File                             |
                 |                                                     |
                 |   [0] Back                                          |
                 |                                                     |
@@ -299,16 +302,17 @@ public class Driver {
 
             switch(option){
                 case 1 -> editPetsDayCareName();
-                case 2 -> showWeeklyIncome();
-                case 3 -> showPetsAverageDaysStayedPerWeek();
-                case 4 -> loadFile();
-                case 5 -> saveFile();
+                case 2 -> editMaximumPetsAllowed();
+                case 3 -> showWeeklyIncome();
+                case 4 -> showPetsAverageDaysStayedPerWeek();
+                case 5 -> loadFile();
+                case 6 -> saveFile();
                 default -> System.out.println(" - Invalid option, try again.");
             }
 
             ScannerInput.readNextLine("\n[... Press any key to continue ...]\n");
 
-            option = editOwnersMenu();
+            option = viewPetsDayCareMenu();
         }
     }
 
@@ -318,6 +322,12 @@ public class Driver {
 
     // I changed to addPet method from void to Pet to make it easier when updating a pet
     private Pet addPet(int id){
+        if(id == -1 && petsDayCareAPI.getPets().size() == petsDayCareAPI.getMaxNumberOfPets()){
+            System.out.println("The maximum pet limit was reached (" + petsDayCareAPI.getMaxNumberOfPets()
+                    + ").\nTry updating the maximum amount of pets allowed.");
+            return null;
+        }
+
         // first add pet, then ask if there is an owner or not,
         // and if there is an owner, call the addOwner method
 
@@ -351,7 +361,7 @@ public class Driver {
         for(int i = 0; i < newPet.getDaysAttending().length; i++){
             newPet.updateSpecificDayAttending(
                     i,
-                    getBooleanFromYesOrNo("Is '" + name + "' staying on " + newPet.DAYS[i] + "?")
+                    getBooleanFromYesOrNo("Is '" + name + "' staying on " + newPet.DAYS[i] + "? (Yes/No): ")
             );
         }
 
@@ -455,7 +465,7 @@ public class Driver {
         System.out.println();
         System.out.println("There are " + petsDayCareAPI.numberOfPets() + " pet(s) in the registry");
 
-        if(getBooleanFromYesOrNo("Do you want to see the full list of pets? (Yes/No):")){
+        if(getBooleanFromYesOrNo("Do you want to see the full list of pets? (Yes/No): ")){
             System.out.println(petsDayCareAPI.listAllPets());
         }
     }
@@ -464,7 +474,7 @@ public class Driver {
         System.out.println();
         System.out.println("There are " + petsDayCareAPI.numberOfDogs() + " dog(s) in the registry");
 
-        if(getBooleanFromYesOrNo("Do you want to see the full list of dogs? (Yes/No):")){
+        if(getBooleanFromYesOrNo("Do you want to see the full list of dogs? (Yes/No): ")){
             System.out.println(petsDayCareAPI.listAllDogs());
         }
     }
@@ -473,7 +483,7 @@ public class Driver {
         System.out.println();
         System.out.println("There are " + petsDayCareAPI.numberOfCats() + " cat(s) in the registry");
 
-        if(getBooleanFromYesOrNo("Do you want to see the full list of cats? (Yes/No):")){
+        if(getBooleanFromYesOrNo("Do you want to see the full list of cats? (Yes/No): ")){
             System.out.println(petsDayCareAPI.listAllCats());
         }
     }
@@ -482,7 +492,7 @@ public class Driver {
         System.out.println();
         System.out.println("There are " + petsDayCareAPI.numberOfParrots() + " parrot(s) in the registry");
 
-        if(getBooleanFromYesOrNo("Do you want to see the full list of parrots? (Yes/No):")){
+        if(getBooleanFromYesOrNo("Do you want to see the full list of parrots? (Yes/No): ")){
             System.out.println(petsDayCareAPI.listAllParrots());
         }
     }
@@ -493,7 +503,7 @@ public class Driver {
         System.out.println();
         System.out.println("There are " + petsDayCareAPI.numberOfDangerousDogs() + " (dangerous) dog(s) in the registry");
 
-        if(getBooleanFromYesOrNo("Do you want to see the full list of (dangerous) dogs? (Yes/No):")){
+        if(getBooleanFromYesOrNo("Do you want to see the full list of (dangerous) dogs? (Yes/No): ")){
             System.out.println(petsDayCareAPI.listAllDangerousDogs());
         }
     }
@@ -505,7 +515,7 @@ public class Driver {
         System.out.println();
         System.out.println("There are " + petsDayCareAPI.numberOfParrotsByVocabularySize(vocabularySize) + " parrot(s) in the registry");
 
-        if(getBooleanFromYesOrNo("Do you want to see the full list of parrots? (Yes/No):")){
+        if(getBooleanFromYesOrNo("Do you want to see the full list of parrots? (Yes/No): ")){
             System.out.println(petsDayCareAPI.listParrotsByVocabularySize(vocabularySize));
         }
     }
@@ -514,7 +524,7 @@ public class Driver {
         System.out.println();
         System.out.println("There are " + petsDayCareAPI.numberOfIndoorCats() + " (indoor) cat(s) in the registry");
 
-        if(getBooleanFromYesOrNo("Do you want to see the full list of (indoor) cats? (Yes/No):")){
+        if(getBooleanFromYesOrNo("Do you want to see the full list of (indoor) cats? (Yes/No): ")){
             System.out.println(petsDayCareAPI.listAllIndoorCats());
         }
     }
@@ -668,6 +678,12 @@ public class Driver {
         System.out.println("Edit name completed.");
     }
 
+    private void editMaximumPetsAllowed(){
+        petsDayCareAPI.setMaxNumberOfPets(ScannerInput.readNextInt("Enter the new maximum amount of pets allowed at the Pets Day Care: "));
+        System.out.println();
+        System.out.println("Edit maximum amount completed.");
+    }
+
     private void showWeeklyIncome(){
         System.out.println();
         System.out.println("The weekly income of the Pets Day Care '" + petsDayCareAPI.getName() + "' is " + petsDayCareAPI.getWeeklyIncome());
@@ -685,6 +701,10 @@ public class Driver {
     private void loadFile(){
         try{
             petsDayCareAPI.load();
+
+            System.out.println();
+            System.out.println("Pets loaded.");
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -693,6 +713,10 @@ public class Driver {
     private void saveFile(){
         try{
             petsDayCareAPI.save();
+
+            System.out.println();
+            System.out.println("Saved Pets.");
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

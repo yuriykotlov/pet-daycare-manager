@@ -53,7 +53,7 @@ public abstract class Pet {
     public String toString(){
         return "\n\tName: " + getName()
                 +"\n\t | Age: " + getAge()
-                + "\n\t | Owner: " + getOwner()
+                + "\n\t | Owner:\n\t-> " + getOwner()
                 + "\n\t | Id: " + getId();
     }
 
@@ -143,7 +143,7 @@ public abstract class Pet {
         String daysAttendingString = "";
 
         for(int i = 0; i < daysAttending.length; i++){
-            daysAttendingString += "\n   -> " + DAYS[i] + " [ " + Utilities.booleanToYN(daysAttending[i]) + " ]";
+            daysAttendingString += "\n\t-> " + DAYS[i] + " [" + Utilities.booleanToYN(daysAttending[i]) + "]";
         }
 
         return daysAttendingString;
