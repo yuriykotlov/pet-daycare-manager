@@ -11,6 +11,7 @@ class PetTest {
     Owner owner;
 
     Dog dogNormal, onEdgeDog, belowEdgeDog, aboveEdgeDog;
+    Cat cat;
     boolean[] days;
     @BeforeEach
     void setUp() {
@@ -28,6 +29,7 @@ class PetTest {
         days[5]  = false;
         days[6]  = true; //Sunday
 
+        cat = new Cat("cat", 5, owner, 1001, 'F', true, 10, false, "Tunnel", false);
      }
     @Test
     void testInitName() {
@@ -135,7 +137,6 @@ class PetTest {
         assertEquals(days, dogNormal.getDaysAttending());
         dogNormal.checkOut(dogNormal.getDaysAttending().length);
         assertEquals(days, dogNormal.getDaysAttending());
-
     }
 
     @Test
@@ -165,11 +166,29 @@ class PetTest {
         String result = dogNormal.toString();
         assertTrue(result.contains("Buddy"));
         assertTrue(result.contains("Age: 5"));
-        assertTrue(result.contains("Id: "));
-        assertTrue(result.contains("Breed: "));
-        assertTrue(result.contains("Dangerous Breed: "));
+        assertTrue(result.contains("Id: 1000"));
+        assertTrue(result.contains("Breed: Labrador Retriever"));
+        assertTrue(result.contains("Dangerous Breed: N"));
         assertTrue(result.contains("Current Rate: "));
         assertTrue(result.contains("Weekly Fee: "));
+
+        String result2 = cat.toString();
+        assertTrue(result2.contains("Cat"));
+        assertTrue(result2.contains("Age: 5"));
+        assertTrue(result2.contains("Id: 1001"));
+        assertTrue(result2.contains("Favourite Toy: Tunnel"));
+        assertTrue(result2.contains("Indoor Cat: N"));
+        assertTrue(result2.contains("Weekly Fee: "));
     }
 
+    @Test
+    public void testCat(){
+        assertEquals("Tunnel", cat.getFavouriteToy());
+        cat.setFavouriteToy("Other");
+        assertEquals("Other", cat.getFavouriteToy());
+
+        assertFalse(cat.isIndoorCat());
+        cat.setIndoorCat(true);
+        assertTrue(cat.isIndoorCat());
+    }
 }

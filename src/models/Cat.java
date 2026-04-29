@@ -1,6 +1,7 @@
 package models;
 
 import utils.CatToyUtility;
+import utils.Utilities;
 
 public class Cat extends Mammal {
     private String favouriteToy = "None";
@@ -17,7 +18,7 @@ public class Cat extends Mammal {
     @Override
     public String toString(){
         return super.toString() + " | Favourite Toy: " + getFavouriteToy()
-                + " | Indoor Cat: " + isIndoorCat()
+                + " | Indoor Cat: " + Utilities.booleanToYN(isIndoorCat())
                 + " | Weekly Fee: " + calculateWeeklyFee();
     }
 
