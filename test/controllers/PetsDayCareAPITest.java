@@ -298,9 +298,12 @@ class PetsDayCareAPITest {
         Owner owner = new Owner(200, "JohnOther", "0871234567");
         Dog dog = new Dog("RexOther", 5, owner, 1000, 'M', true, 10, false, false, "Labrador Retriever");
 
-        pets.add(dog);
         // overwrite
+        pets.add(dog);
         validAPI.setPets(pets);
+
+        assertNotNull(validAPI.removePetAtPosition(0));
+        assertNull(validAPI.getPetByIndex(0));
 
         assertNotNull(validAPI.getFile());
 

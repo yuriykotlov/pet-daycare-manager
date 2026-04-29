@@ -190,7 +190,7 @@ public class PetsDayCareAPI implements ISerializer {
      * @return Returns the pet if found or null if not
      */
     public Pet getPetByIndex(int petIndex){
-        if(isValidPetIndex(petIndex)){
+        if(!pets.isEmpty() && isValidPetIndex(petIndex)){
             return pets.get(petIndex);
         }
         return null;
