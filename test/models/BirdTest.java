@@ -2,6 +2,8 @@ package models;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import utils.BirdUtility;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class BirdTest {
@@ -13,15 +15,19 @@ class BirdTest {
     @BeforeEach
     void setUp() {
         owner = new Owner(1234, "Jane Doe", "87654321");
-        bird = new Parrot("Tweety", 2, owner, 100, 0.5, true, 0);
+        bird = new Parrot("Tweety", 7, owner, 100, 7, true, 11);
     }
 
     // --- Constructor & Getters ---
 
     @Test
     void testConstructorAndGetters() {
-        assertEquals(3.0, bird.getWingSpan());
+        assertEquals(7, bird.getWingSpan());
         assertTrue(bird.canFly());
+
+        assertEquals(BirdUtility.getVocabularyLevel2(11), bird.getVocabularySize());
+        bird.setVocabularySize(BirdUtility.getVocabularyLevel2(21));
+        assertEquals(BirdUtility.getVocabularyLevel2(21), bird.getVocabularySize());
     }
 
     // --- Setters ---
@@ -51,13 +57,13 @@ class BirdTest {
 
     @Test
     void testEqualsSameFields() {
-        Parrot sameBird = new Parrot("Polly", 5, owner, 200, 0.5, true, 20);
+        Parrot sameBird = new Parrot("Polly", 5, owner, 200, 7, true, 20);
         assertNotEquals(bird, sameBird);
     }
 
     @Test
     void testEqualsDifferentWingSpan() {
-        Parrot differentWingSpan = new Parrot("Tweety", 2, owner, 100, 1.0, true, 20);
+        Parrot differentWingSpan = new Parrot("Tweety", 2, owner, 100, 7, true, 20);
         assertEquals(bird.getWingSpan(), differentWingSpan.getWingSpan());
     }
 
@@ -73,11 +79,12 @@ class BirdTest {
     @Test
     void testToString() {
         String result = bird.toString();
-        assertTrue(result.contains("Age: 2"));
-        assertTrue(result.contains("Wing Span: 3.0"));
+        assertTrue(result.contains("Age: 7"));
+        assertTrue(result.contains("Wing Span: 7.0"));
         assertTrue(result.contains("Can Fly: Y"));
         bird.setCanFly(false);
         result = bird.toString();
         assertTrue(result.contains("Can Fly: N"));
+        assertTrue(result.contains("Weekly Fee: "));
     }
 }

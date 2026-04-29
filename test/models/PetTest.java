@@ -152,6 +152,13 @@ class PetTest {
         boolean[] allDaysAttending = {true, true, true, true, true, true , true};
         dogNormal.setDaysAttending(allDaysAttending);
         assertEquals(7, dogNormal.numOfDaysAttending());
+
+        // test if specific day updating works
+        dogNormal.updateSpecificDayAttending(0, false);
+        assertFalse(dogNormal.getDaysAttending()[0]);
+
+        // making sure days attending string isn't empty
+        assertNotEquals("", dogNormal.displayStringOfDaysAttending());
     }
     @Test
     void testToString() {

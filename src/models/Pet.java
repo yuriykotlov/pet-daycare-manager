@@ -1,6 +1,5 @@
 package models;
 
-import jdk.jshell.execution.Util;
 import utils.Utilities;
 
 public abstract class Pet {
@@ -34,11 +33,10 @@ public abstract class Pet {
         }
         this.age = age;
 
-        // if owner is not of type Owner
-        if(!(owner instanceof Owner)){
-            owner = null;
+        // making sure the owner is of the Owner class
+        if(owner instanceof Owner){
+            this.owner = owner;
         }
-        this.owner = owner;
 
         // id of usually -1 or less means to set the id automatically
         if(id < 0){
@@ -104,7 +102,7 @@ public abstract class Pet {
         this.daysAttending = daysAttending;
     }
     public void updateSpecificDayAttending(int index, boolean attending){
-        if(index > 0 && index < daysAttending.length) daysAttending[index] = attending;
+        if(index >= 0 && index < daysAttending.length) daysAttending[index] = attending;
     }
 
     //

@@ -14,7 +14,7 @@ public class Parrot extends Bird {
 
     @Override
     public String toString(){
-        return super.toString() + " | Vocabulary Size: " + vocabularySize;
+        return super.toString() + " | Vocabulary Size: " + vocabularySize + " | Weekly Fee: " + calculateWeeklyFee();
     }
 
     //

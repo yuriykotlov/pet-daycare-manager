@@ -11,9 +11,11 @@ public abstract class Bird extends Pet {
 
     public Bird(String name, int age, Owner owner, int id, double wingSpan, boolean canFly){
         super(name, age, owner, id);
-        if(Utilities.validRange(wingSpan, 3, 155.5)){
+
+        if(Utilities.validRange(wingSpan, 3.0, 155.5)){
             this.wingSpan = wingSpan;
         }
+
         this.canFly = canFly;
     }
 
@@ -44,11 +46,6 @@ public abstract class Bird extends Pet {
     //
     // Main methods
     //
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(wingSpan, canFly);
-    }
 
     @Override
     public boolean equals(Object object){
