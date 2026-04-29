@@ -16,22 +16,20 @@ public class CatToyUtility {
         put("MICE TOY", "Safe for indoor cats");
         put("CATNIP MOUSE", "Encourages active play");
         put("SCRATCHING POST", "Essential for claw maintenance");
-        put("TUNNEL", "Fun for hiding and running");  }};
-
+        put("TUNNEL", "Fun for hiding and running");
+    }};
 
     static public String getCatToys() {
         // Display all toys with info
         String info = "Cat Toys and Info:";
         for (Map.Entry<String, String> entry : catToys.entrySet()) {
-            info += "- " + entry.getKey() + " | Info: " + entry.getValue();
+            info += "\n- " + entry.getKey() + " | " + entry.getValue();
         }
         return info;
     }
 
     // Check for a valid toy
     static public boolean isCatToy(String catToy) {
-        return catToys.containsKey(catToy);
+        return catToys.containsKey(catToy.toUpperCase());
     }
-
-
 }

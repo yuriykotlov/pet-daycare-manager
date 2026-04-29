@@ -6,6 +6,7 @@ import models.*;
 import utils.DogBreedUtility;
 import utils.ScannerInput;
 import utils.Utilities;
+import utils.CatToyUtility;
 
 import java.io.File;
 
@@ -790,8 +791,15 @@ public class Driver {
         double weight = getWeight();
         boolean isVaccinated = getBooleanFromYesOrNo("Is this cat vaccinated? (Yes/No): ");
 
+        System.out.println("\n" + CatToyUtility.getCatToys() + "\n");
+
         // cat specific variables
         String favouriteToy = ScannerInput.readNextLine("What is this cat's favourite toy?: ");
+
+        while(!CatToyUtility.isCatToy(favouriteToy)){
+            favouriteToy = ScannerInput.readNextLine("What is this cat's favourite toy?: ");
+        }
+
         boolean indoorCat = getBooleanFromYesOrNo("Is this cat an indoor cat? (Yes/No): ");
 
         return new Cat(name, age, owner, id, sex, isNeutered, weight, isVaccinated, favouriteToy, indoorCat);
