@@ -9,6 +9,7 @@ import utils.Utilities;
 import utils.CatToyUtility;
 
 import java.io.File;
+import java.net.URISyntaxException;
 
 public class Driver {
     //TODO Define  objects of the PetDayCareAPI and OwnerAPI here.  They  should be declared private.
@@ -20,8 +21,19 @@ public class Driver {
         new Driver();
     }
 
+    public static File resolveDataFile(String filename) {
+        try {
+            File appDir = new File(Driver.class.getProtectionDomain()
+                    .getCodeSource().getLocation().toURI()).getParentFile();
+            return new File(appDir, filename);
+        } catch (URISyntaxException | NullPointerException e) {
+            // Fallback: couldn't determine app location, use current working directory
+            return new File(filename);
+        }
+    }
+
     public Driver() {
-        File file = new File("Pets.xml");
+        File file = resolveDataFile("Pets.xml");
         ownerAPI = new OwnerAPI(file);
 
         String name = ScannerInput.readNextLine("Enter a name for your Pets Day Care: ");

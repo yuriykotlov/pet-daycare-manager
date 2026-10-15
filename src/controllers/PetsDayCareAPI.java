@@ -797,6 +797,8 @@ public class PetsDayCareAPI implements ISerializer {
      */
     @Override
     public void load() throws Exception{
+        if(!file.exists()) return;
+
         //list of classes that you wish to include in the serialisation, separated by a comma
         Class<?>[] classes = new Class[]{
                 Owner.class,
