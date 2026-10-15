@@ -21,3 +21,10 @@ jobs:
           distribution: 'temurin'
       - name: Build and test
         run: mvn -B clean package
+      - name: Test report
+        uses: dorny/test-reporter@v1
+        if: always()
+        with:
+          name: Maven Tests (${{ matrix.os }})
+          path: target/surefire-reports/*.xml
+          reporter: java-junit
