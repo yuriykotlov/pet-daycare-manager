@@ -1,4 +1,4 @@
-name: Build
+name: Linux (Ubuntu) Build
 
 on:
   push:
@@ -8,10 +8,7 @@ on:
 
 jobs:
   build:
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
@@ -19,12 +16,14 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
+          
       - name: Build and test
         run: mvn -B clean package
+
       - name: Test report
         uses: dorny/test-reporter@v1
         if: always()
         with:
-          name: Maven Tests (${{ matrix.os }})
+          name: Maven Tests (Linux, Ubuntu)
           path: target/surefire-reports/*.xml
           reporter: java-junit
